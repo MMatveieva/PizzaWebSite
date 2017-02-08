@@ -1,14 +1,23 @@
 .pizza-card {
+  margin-top: 30px;
+  height: auto;
+  padding: 6px;
+
   img {
     max-width: 250px;
     width: 100%;
   }
 
   h3 {
-    color: @mainColor;
-    background-color: lighten(@mainColor, 45%);
+    color: @titleColor;
+    font-weight: 600;
+    background-color: lighten(white, 45%);
   }
 
+}
+
+.row {
+  width: 100%;
 }
 
 .cart {
@@ -20,7 +29,55 @@
   width: 330px;
   height: 100%;
   background: white;
-  overflow: scroll;
   z-index: 5;
+
+  .order {
+    position: fixed;
+    background: white;
+    top: 0;
+    right: 0;
+    width: 330px;
+    padding-top: 33px;
+    padding-bottom: 27px;
+
+    .order-label {
+      padding-bottom: 15px;
+
+      .title {
+        font-size: 20px;
+        line-height: 17px;
+        padding-left: 15px;
+        font-weight: 700;
+      }
+
+      .left-count-label {
+        background: #ec890e !important;
+        min-width: 10px;
+        padding: 3px 7px;
+        line-height: 1em;
+        text-align: center;
+        border-radius: 500rem;
+        font-weight: 700;
+        color: white;
+      }
+    }
+
+    .clear-order {
+      margin-top: -5px;
+      font-size: 10px;
+      padding-left: 45px;
+      color: rgba(0, 0, 0, .5);
+    }
+
+  }
+
+  .order-list {
+    background: #F5F5F5;
+    margin-top: 15px;
+    height: 100%;
+    display: block;
+    overflow: scroll;
+  }
+
 }
 

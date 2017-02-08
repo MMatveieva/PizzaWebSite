@@ -1,4 +1,4 @@
-@mainColor: blue;
+@titleColor: #ec6a1c;
 
 @import "pizza/pizza-card";
 
@@ -28,27 +28,57 @@ body {
     width: 100px;
     height: 90px;
     background: #ea862e;
+    border-left: 1px solid #d16200;
+    border-right: 1px solid #d16200;
+
+    .site-logo {
+      text-align: center;
+      color: white;
+
+      .kma-logo {
+        font-size: 25px;
+      }
+
+      .pizza-logo {
+        font-size: 19px;
+      }
+    }
 
     .rozhki {
       height: 11px;
       width: 100px;
       top: 90px;
-      left: -0.5px;
+      left: -.2px;
       transform: scaleY(-1);
       position: absolute;
       background-image: url(../images/discount.svg);
+      background-size: 100px, 11px;
       margin: 0 !important;
       padding: 0 !important;
     }
   }
 
   .top-panel-items {
-    padding-left: 100px;
+    padding-left: 130px;
     border-bottom: 1px solid;
+    color: #a1a1a1;
+
+    .first-line {
+      border-bottom: 1px solid #fffff5;
+      line-height: 11px;
+      padding-bottom: 10px;
+      margin-top: 15px;
+    }
+
+    .second-line {
+      color:white;
+      font-size: 16px;
+      margin-top: 10px;
+      padding-bottom: 9px;
+    }
   }
 
   .top-header-item {
-    color: #a1a1a1;
     padding-right: 30px;
 
     &.phone-number {
