@@ -1,10 +1,26 @@
 .pizza-card {
   img {
     max-width: 250px;
+    width: 100%;
   }
 
   h3 {
     color: @mainColor;
     background-color: lighten(@mainColor, 45%);
   }
+
 }
+
+.cart {
+  position: fixed;
+  right: 0;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  min-width: 330px;
+  width: 330px;
+  height: 100%;
+  background: white;
+  overflow: scroll;
+  z-index: 5;
+}
+
