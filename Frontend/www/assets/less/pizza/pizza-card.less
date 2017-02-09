@@ -2,6 +2,8 @@
   margin-top: 30px;
   height: auto;
   padding: 6px;
+  max-height: 100%;
+  box-sizing: content-box;
 
   img {
     max-width: 250px;
@@ -12,6 +14,22 @@
     color: @titleColor;
     font-weight: 600;
     background-color: lighten(white, 45%);
+  }
+
+  .caption {
+    height: 100%;
+    box-sizing: border-box;
+
+    .pizza-type {
+      color: #a3a0a0;
+      font-size: 12px;
+      margin-bottom: 3px;
+    }
+
+    .size-weight-buy{
+      height: 90px;
+      box-sizing: border-box;
+    }
   }
 
 }
