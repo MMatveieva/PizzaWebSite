@@ -4,6 +4,7 @@
   padding: 6px;
   max-height: 100%;
   box-sizing: border-box;
+  position: relative;
 
   img {
     max-width: 300px;
@@ -14,6 +15,22 @@
     color: @titleColor;
     font-weight: 600;
     background-color: lighten(white, 45%);
+  }
+
+  .new-pizza, .popular-pizza{
+    position: absolute;
+    top: -10px;
+    right: -17px;
+    font-size: 18px;
+  }
+
+  .new-pizza {
+    height: 27px;
+    width: 67px;
+  }
+
+  .popular-pizza{
+    width: 120px;
   }
 
   .caption {

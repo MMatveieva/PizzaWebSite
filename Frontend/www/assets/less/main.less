@@ -9,12 +9,16 @@ body {
 .wrap {
   padding-right: 300px;
   padding-top: 80px;
+
+  .row {
+    padding-right: 7px;
+  }
 }
 
 .top-panel {
   position: fixed;
   width: 100%;
-  height: 80px;
+  height: 84px;
   top: 0;
   left: 0;
   z-index: 3;
@@ -64,14 +68,22 @@ body {
     color: #a1a1a1;
 
     .first-line {
-      border-bottom: 1px solid #fffff5;
+      border-bottom: 1px solid rgb(161, 161, 161);
       line-height: 11px;
-      padding-bottom: 10px;
+      padding-bottom: 12px;
       margin-top: 15px;
+      position: relative;
+
+      .enter-button {
+        position: absolute;
+        top: -11px;
+        right: 350px;
+        box-sizing: border-box;
+      }
     }
 
     .second-line {
-      color:white;
+      color: white;
       font-size: 16px;
       margin-top: 10px;
       padding-bottom: 9px;
