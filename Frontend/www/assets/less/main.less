@@ -1,6 +1,8 @@
 @import "../bootstrap/less/bootstrap";
 
-@titleColor: #ec6a1c;
+@title-color: #ec6a1c;
+@logo-color: #ea862e;
+@logo-border-color: #d16200;
 
 @import "pizza/pizza-card";
 
@@ -15,6 +17,15 @@ body {
   .row {
     width: 100%;
     padding-right: 7px;
+  }
+
+  .pizza-types {
+    padding-left: 15px;
+    padding-right: 23px;
+
+    a {
+      color: #ec890e;
+    }
   }
 
   .menu {
@@ -53,9 +64,9 @@ body {
     padding-top: 15px;
     width: 100px;
     height: 90px;
-    background: #ea862e;
-    border-left: 1px solid #d16200;
-    border-right: 1px solid #d16200;
+    background: @logo-color;
+    border-left: 1px solid @logo-border-color;
+    border-right: 1px solid @logo-border-color;
 
     .site-logo {
       text-align: center;
@@ -126,5 +137,43 @@ body {
     &.free-delivery {
       font-size: 16px;
     }
+  }
+}
+
+.sale-label {
+  position: fixed;
+  bottom: 0;
+  left: 9px;
+  background: @logo-color;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  border: 1px solid @logo-border-color;
+  padding: 10px;
+  padding-top: 15px;
+  width: 100px;
+  //height: 90px;
+  text-align: center;
+
+  .sale-rozhki{
+    height: 11px;
+    width: 100px;
+    top: -11px;
+    left: -.2px;
+    //transform: scaleY(-1);
+    position: absolute;
+    background-image: url(../images/discount.svg);
+    background-size: 100px, 11px;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .sale-slogan{
+    padding-bottom: 4px;
+    border-bottom: 2px dotted #d16301;
+  }
+
+  .sale-discount{
+    padding-top: 5px;
   }
 }
