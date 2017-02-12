@@ -3,6 +3,7 @@
 @title-color: #ec6a1c;
 @logo-color: #ea862e;
 @logo-border-color: #d16200;
+@logo-text-color: #ec890e;
 
 @import "pizza/pizza-card";
 
@@ -24,7 +25,7 @@ body {
     padding-right: 23px;
 
     a {
-      color: #ec890e;
+      color: @logo-text-color;
     }
   }
 
@@ -33,7 +34,7 @@ body {
     position: relative;
 
     .pizza-count {
-      background: #ec890e !important;
+      background: @logo-text-color !important;
       min-width: 9px;
       padding: 2px 7px;
       line-height: 1em;
@@ -198,6 +199,7 @@ body {
     width: 330px;
     padding-top: 33px;
     padding-bottom: 27px;
+    z-index: 4;
 
     .order-label {
       padding-bottom: 15px;
@@ -210,7 +212,7 @@ body {
       }
 
       .left-count-label {
-        background: #ec890e !important;
+        background: @logo-text-color !important;
         min-width: 10px;
         padding: 2px 7px;
         line-height: .8em;
@@ -236,6 +238,41 @@ body {
     height: 100%;
     display: block;
     overflow: scroll;
+    padding-top: 70px;
+
+    .ordered-pizza {
+      position: relative;
+
+      .order-image {
+        position: absolute;
+        right: -48px;
+        width: 96px;
+        height: 96px;
+      }
+
+      .pizza-order-title {
+        color: @logo-text-color;
+        font-size: 20px;
+        padding: 10px;
+        padding-left: 20px;
+
+      }
+
+      .order-details {
+        font-size: 12px;
+        padding-left: 25px;
+
+        span{
+          padding-right: 10px;
+        }
+
+        img {
+          display: inline-block;
+          height: 10px;
+          width: 9px;
+        }
+      }
+    }
   }
 
   .buy-panel {
