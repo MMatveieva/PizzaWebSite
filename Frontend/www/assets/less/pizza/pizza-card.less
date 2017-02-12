@@ -3,10 +3,10 @@
   height: auto;
   padding: 6px;
   max-height: 100%;
-  box-sizing: content-box;
+  box-sizing: border-box;
 
   img {
-    max-width: 250px;
+    max-width: 300px;
     width: 100%;
   }
 
@@ -26,9 +26,47 @@
       margin-bottom: 3px;
     }
 
-    .size-weight-buy{
-      height: 90px;
+    .size-weight-buy {
+      height: 150px;
       box-sizing: border-box;
+      line-height: 17px;
+      width: 100%;
+      position: relative;
+      display: block;
+
+      img {
+        height: 13px;
+        width: 12px;
+      }
+    }
+
+    .small-pizza {
+      float: left;
+      display: inline-block;
+    }
+
+    .big-pizza {
+      float: right;
+      display: inline-block;
+    }
+
+    .small-pizza, .big-pizza {
+      text-align: center;
+
+      .pizza-size, .pizza-weight {
+        margin: 2px;
+      }
+
+      .pizza-price {
+
+        p {
+          margin-top: -11px;
+        }
+      }
+
+      .size, .weight {
+        margin: 2px;
+      }
     }
   }
 
