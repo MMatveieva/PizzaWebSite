@@ -155,7 +155,7 @@ body {
   //height: 90px;
   text-align: center;
 
-  .sale-rozhki{
+  .sale-rozhki {
     height: 11px;
     width: 100px;
     top: -11px;
@@ -168,12 +168,106 @@ body {
     padding: 0 !important;
   }
 
-  .sale-slogan{
+  .sale-slogan {
     padding-bottom: 4px;
     border-bottom: 2px dotted #d16301;
   }
 
-  .sale-discount{
+  .sale-discount {
     padding-top: 5px;
   }
 }
+
+.cart {
+  position: fixed;
+  right: 0;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  min-width: 330px;
+  width: 330px;
+  height: 100%;
+  background: white;
+  z-index: 5;
+  box-shadow: rgba(0,0,0,.2) -3px 3px 10px;
+
+  .order {
+    position: fixed;
+    background: white;
+    top: 0;
+    right: 0;
+    width: 330px;
+    padding-top: 33px;
+    padding-bottom: 27px;
+
+    .order-label {
+      padding-bottom: 15px;
+
+      .title {
+        font-size: 20px;
+        line-height: 17px;
+        padding-left: 15px;
+        font-weight: 700;
+      }
+
+      .left-count-label {
+        background: #ec890e !important;
+        min-width: 10px;
+        padding: 2px 7px;
+        line-height: .8em;
+        text-align: center;
+        border-radius: 500rem;
+        font-weight: 700;
+        color: white;
+      }
+    }
+
+    .clear-order {
+      margin-top: -5px;
+      font-size: 10px;
+      padding-left: 45px;
+      color: rgba(0, 0, 0, .5);
+    }
+
+  }
+
+  .order-list {
+    background: #f8f8f8;
+    margin-top: 15px;
+    height: 100%;
+    display: block;
+    overflow: scroll;
+  }
+
+  .buy-panel {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background: white;
+    width: 330px;
+    padding: 10px;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+
+    span {
+      color: #333;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .order-price-money {
+      position: fixed;
+      font-size: 20px;
+      margin-left: 80px;
+      bottom: 87px;
+    }
+
+    .order-price-title {
+      padding: 3px;
+    }
+
+    .order-button {
+      padding: 20px;
+    }
+  }
+
+}
+
