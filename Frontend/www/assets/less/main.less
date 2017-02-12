@@ -192,7 +192,7 @@ body {
   box-shadow: rgba(0,0,0,.2) -3px 3px 10px;
 
   .order {
-    position: fixed;
+    position: absolute;
     background: white;
     top: 0;
     right: 0;
@@ -239,9 +239,11 @@ body {
     display: block;
     overflow: scroll;
     padding-top: 70px;
+    padding-bottom: 127px;
 
     .ordered-pizza {
       position: relative;
+      border-bottom: 1px solid rgba(0,0,0,.1);
 
       .order-image {
         position: absolute;
@@ -262,7 +264,7 @@ body {
         font-size: 12px;
         padding-left: 25px;
 
-        span{
+        span {
           padding-right: 10px;
         }
 
@@ -272,11 +274,51 @@ body {
           width: 9px;
         }
       }
+
+      .order-actions {
+        box-sizing: border-box;
+        padding-top: 5px;
+        padding-left: 25px;
+        padding-bottom: 20px;
+
+        .price {
+          color: black;
+          font-size: 14px;
+          font-weight: 700;
+          padding-right: 15px;
+        }
+
+        .quantity{
+          color: black;
+          font-size: 14px;
+          font-weight: 700;
+          padding: 8px;
+        }
+
+        .round-button {
+          border-radius: 15px;
+          height: 30px;
+          width: 30px;
+          text-align: center;
+          position: relative;
+
+        }
+
+        .plus-button, .minus-button, .delete-button {
+          font-weight: 400;
+          font-size: 12px;
+        }
+
+        .delete-button {
+          color: @logo-text-color;
+          margin-left: 30px;
+        }
+      }
     }
   }
 
   .buy-panel {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     right: 0;
     background: white;
