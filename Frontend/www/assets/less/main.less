@@ -57,6 +57,7 @@ body {
   left: 0;
   z-index: 3;
   background: rgba(0, 0, 0, .8);
+  border-bottom: 1px solid;
 
   .site-icon {
     position: fixed;
@@ -98,13 +99,12 @@ body {
 
   .top-panel-items {
     padding-left: 130px;
-    border-bottom: 1px solid;
     color: #a1a1a1;
 
     .first-line {
       border-bottom: 1px solid rgb(161, 161, 161);
       line-height: 11px;
-      padding-bottom: 12px;
+      padding-bottom: 14px;
       margin-top: 15px;
       position: relative;
 
@@ -161,7 +161,6 @@ body {
     width: 100px;
     top: -11px;
     left: -.2px;
-    //transform: scaleY(-1);
     position: absolute;
     background-image: url(../images/discount.svg);
     background-size: 100px, 11px;
@@ -243,7 +242,7 @@ body {
 
     .ordered-pizza {
       position: relative;
-      border-bottom: 1px solid rgba(0,0,0,.1);
+      border-bottom: 1px solid rgba(0, 0, 0, .1);
 
       .order-image {
         position: absolute;
@@ -288,7 +287,7 @@ body {
           padding-right: 15px;
         }
 
-        .quantity{
+        .quantity {
           color: black;
           font-size: 14px;
           font-weight: 700;
@@ -347,6 +346,29 @@ body {
       padding: 20px;
     }
   }
-
 }
 
+@media (max-width: 800px) {
+  
+}
+
+@media (max-width: 700px) {
+
+  .top-panel {
+    height: 70px;
+
+    .phone-number {
+      font-size: 14px !important;
+    }
+  }
+
+  .enter-button {
+    top: 20px !important;
+  }
+
+  .first-line {
+    height: 9px;
+    padding-bottom: 7px;
+    margin-top: 10px !important;
+  }
+}
