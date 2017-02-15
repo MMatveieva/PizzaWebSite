@@ -1,5 +1,4 @@
 <%
-
 function getIngredientsArray(pizza) {
     //Отримує вміст піци
     var content = pizza.content;
@@ -7,7 +6,7 @@ function getIngredientsArray(pizza) {
 
     //Object.keys повертає масив ключів в об’єкті JavaScript
 
-    Object.keys(content).forEach(function(key){
+    Object.keys(content).forEach(function (key) {
 
         //a.concat(b) створює спільний масив із масивів a та b
         result = result.concat(content[key]);
@@ -15,15 +14,15 @@ function getIngredientsArray(pizza) {
 
     return result;
 }
+%>
 
-   %>
-<div class="col-md-6 col-lg-4 pizza-card">
+<!--<div class="col-md-6 col-lg-4 pizza-card">
     <div class="thumbnail">
         <img class="pizza-icon" src="<%= pizza.icon %>" alt="Pizza">
 
         <% if(pizza.is_new) { %>
         <span class="label label-danger">Нова</span>
-        <% } else if(pizza.is_popular) {%>
+        <% } else if(pizza.is_popular) { %>
         <span class="label label-success">Популярна</span>
         <% } %>
 
@@ -35,7 +34,56 @@ function getIngredientsArray(pizza) {
             </div>
         </div>
 
-        <!-- Перед тим щоб показати кнопку необхідно переконатися, що піца має великий розмір -->
+         Перед тим щоб показати кнопку необхідно переконатися, що піца має великий розмір
         <button class="btn btn-primary buy-big">Купити велику</button>
+    </div>
+</div>-->
+
+<div class="col-md-6 col-lg-4">
+    <div class="thumbnail pizza-card">
+        <img src=<%= pizza.icon %>>
+        <% if(pizza.is_new) { %>
+        <span class="label label-danger new-pizza">Нова</span>
+        <% } else if(pizza.is_popular) { %>
+        <span class="label label-success popular-pizza">Популярна</span>
+        <% } %>
+        <div class="caption"><h3>Россо Густо</h3>
+            <p class="pizza-type">З морепродуктами</p>
+            <p class="description">
+                <%= getIngredientsArray(pizza).join(", ") %>
+            </p>
+            <div class="size-weight-buy">
+                <div class="col-sm-6 small-pizza">
+                    <div class="pizza-size">
+                        <img src="assets/images/size-icon.svg">
+                        <span class="size">30</span>
+                    </div>
+                    <div class="pizza-weight">
+                        <img src="assets/images/weight.svg">
+                        <span class="weight">400</span>
+                    </div>
+                    <div class="pizza-price">
+                        <h2>289</h2>
+                        <p>грн</p>
+                    </div>
+                    <a href="#" class="btn btn-warning buy-button">Купити</a>
+                </div>
+                <div class="col-sm-6 big-pizza">
+                    <div class="pizza-size">
+                        <img src="assets/images/size-icon.svg">
+                        <span class="size">40</span>
+                    </div>
+                    <div class="pizza-weight">
+                        <img src="assets/images/weight.svg">
+                        <span class="weight">700</span>
+                    </div>
+                    <div class="pizza-price">
+                        <h2>399</h2>
+                        <p>грн</p>
+                    </div>
+                    <a href="#" class="btn btn-warning buy-button">Купити</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-@import "../bootstrap/less/bootstrap";
+@import "../bootless/bootstrap";
 
 @title-color: #ec6a1c;
 @logo-color: #ea862e;
@@ -9,15 +9,20 @@
 
 body {
   background: #fffff5;
+  min-width: 410px;
 }
 
 .wrap {
-  padding-right: 300px;
+  padding-right: 335px;
   padding-top: 80px;
+  margin-left: 10px;
 
   .row {
     width: 100%;
     padding-right: 7px;
+    right: 0;
+    left: 0;
+    margin: auto;
   }
 
   .pizza-types {
@@ -154,7 +159,6 @@ body {
   padding: 10px;
   padding-top: 15px;
   width: 100px;
-  //height: 90px;
   text-align: center;
 
   .sale-rozhki {
@@ -301,7 +305,7 @@ body {
           width: 30px;
           text-align: center;
           position: relative;
-
+          padding: 2px;
         }
 
         .plus-button, .minus-button, .delete-button {
