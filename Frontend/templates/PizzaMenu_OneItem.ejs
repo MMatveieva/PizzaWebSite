@@ -47,12 +47,13 @@ function getIngredientsArray(pizza) {
         <% } else if(pizza.is_popular) { %>
         <span class="label label-success popular-pizza">Популярна</span>
         <% } %>
-        <div class="caption"><h3>Россо Густо</h3>
-            <p class="pizza-type">З морепродуктами</p>
+        <div class="caption"><h3><%= pizza.title %></h3>
+            <p class="pizza-type"><%= pizza.type %></p>
             <p class="description">
                 <%= getIngredientsArray(pizza).join(", ") %>
             </p>
             <div class="size-weight-buy">
+                <%= if (pizza.small_size != null || pizza.small_size != undefined){ %>
                 <div class="col-sm-6 small-pizza">
                     <div class="pizza-size">
                         <img src="assets/images/size-icon.svg">
@@ -68,6 +69,8 @@ function getIngredientsArray(pizza) {
                     </div>
                     <a href="#" class="btn btn-warning buy-button">Купити</a>
                 </div>
+                <% } %>
+                <%= if (pizza.big_size != null || pizza.big_size != undefined){ %>
                 <div class="col-sm-6 big-pizza">
                     <div class="pizza-size">
                         <img src="assets/images/size-icon.svg">
@@ -83,6 +86,7 @@ function getIngredientsArray(pizza) {
                     </div>
                     <a href="#" class="btn btn-warning buy-button">Купити</a>
                 </div>
+                <% } %>
             </div>
         </div>
     </div>
