@@ -14,6 +14,7 @@ var Cart = [];
 
 //HTML едемент куди будуть додаватися піци
 var $cart = $("#cart");
+var $buyPanel = $(".buy-panel");
 
 function addToCart(pizza, size) {
     //Додавання однієї піци в кошик покупок
@@ -43,6 +44,10 @@ function initialiseCart() {
     //TODO: ...
 
     updateCart();
+    var html_code = Templates.EmptyCart();
+    $cart.html(html_code);
+    $buyPanel.find(".order-price-title").addClass("hidden");
+    $buyPanel.find(".order-price-money").addClass("hidden");
 }
 
 function getPizzaInCart() {
@@ -63,7 +68,7 @@ function updateCart() {
 
         var $node = $(html_code);
 
-        $node.find(".plus").click(function(){
+        $node.find(".plus").click(function () {
             //Збільшуємо кількість замовлених піц
             cart_item.quantity += 1;
 
