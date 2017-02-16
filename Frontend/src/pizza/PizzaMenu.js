@@ -24,7 +24,7 @@ function showPizzaList(list) {
         $node.find(".buy-small").click(function(){
             PizzaCart.addToCart(pizza, PizzaCart.PizzaSize.Small);
         });
-
+        console.log("New pizza",pizza.title);
         $pizza_list.append($node);
     }
 
@@ -48,7 +48,7 @@ function filterPizza(filter) {
 
 function initialiseMenu() {
     //Показуємо усі піци
-    showPizzaList(Pizza_List)
+    showPizzaList(Pizza_List);
 }
 
 exports.filterPizza = filterPizza;
