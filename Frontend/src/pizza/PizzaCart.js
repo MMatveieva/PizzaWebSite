@@ -20,29 +20,43 @@ var $totalPrice = $('.order-price-money');
 var totalprice = 0;
 var $pizzaInCart = $('.left-count-label');
 
-function addToCart(pizza, size) {
-    var p = 0;
-    if (size === "big_size") {
-        p = pizza.big_size.price;
-        totalprice += pizza.big_size.price;
-    } else {
-        p = pizza.small_size.price;
-        totalprice += pizza.small_size.price;
+function isPizzaInCart(pizza, size) {
+    var res = -1;
+    for (var i = 0; i < Cart.length; i++) {
+        if (Cart[i].pizza.title == pizza.title && Cart[i].size == size)
+            res = i;
     }
-    //Додавання однієї піци в кошик покупок
-    Cart.push({
-        toPay: p,
-        pizza: pizza,
-        size: size,
-        quantity: 1,
-        money: p
-    });
+    return res;
+}
 
+function addToCart(pizza, size) {
+    var check = isPizzaInCart(pizza, size);
+    if (check > -1) {
+        Cart[check].quantity++;
+        Cart[check].toPay += Cart[check].money;
+        totalprice += Cart[check].money;
+    } else {
+        var p = 0;
+        if (size === "big_size") {
+            p = pizza.big_size.price;
+            totalprice += pizza.big_size.price;
+        } else {
+            p = pizza.small_size.price;
+            totalprice += pizza.small_size.price;
+        }
+        //Додавання однієї піци в кошик покупок
+        Cart.push({
+            toPay: p,
+            pizza: pizza,
+            size: size,
+            quantity: 1,
+            money: p
+        });
+    }
     //Оновити вміст кошика на сторінці
     updateCart();
     $buyPanel.find(".order-price-title").removeClass("hidden");
     $buyPanel.find(".order-price-money").removeClass("hidden");
-
     $totalPrice.text(totalprice + " грн");
 }
 
@@ -94,6 +108,7 @@ function updateCart() {
             $totalPrice.text(totalprice + " грн");
             $node.find('.price').text(cart_item.toPay + "грн");
             $node.find('.quantity').text(cart_item.quantity);
+            console.log("Cart", Cart);
             //Оновлюємо відображення
             updateCart();
         });
