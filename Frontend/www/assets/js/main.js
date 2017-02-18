@@ -310,16 +310,15 @@ var Templates = require('../Templates');
 var PizzaCart = require('./PizzaCart');
 var Pizza_List = require('../Pizza_List');
 
-//HTML едемент куди будуть додаватися піци
+//HTML елемент куди будуть додаватися піци
 var $pizza_list = $("#pizza_list");
+
+var $menu = $('.menu');
+var $pizzaCount = $menu.find(".pizza-count");
 
 function showPizzaList(list) {
     //Очищаємо старі піци в кошику
     $pizza_list.html("");
-    var $menu = $('.menu');
-    var $pizzaCount = $menu.find(".pizza-count");
-    var quantity = Pizza_List.pizzaLengt;
-    $pizzaCount.text(quantity);
 
     //Онволення однієї піци
     function showOnePizza(pizza) {
@@ -333,7 +332,7 @@ function showPizzaList(list) {
         $node.find(".buy-small").click(function () {
             PizzaCart.addToCart(pizza, PizzaCart.PizzaSize.Small);
         });
-        console.log("New pizza", pizza.title);
+        // console.log("New pizza", pizza.title);
         $pizza_list.append($node);
     }
 
@@ -344,28 +343,21 @@ function filterPizza(filter) {
     //Масив куди потраплять піци які треба показати
     var pizza_shown = [];
 
-    Pizza_List.forEach(function (pizza) {
-        //Якщо піка відповідає фільтру
-        //pizza_shown.push(pizza);
-        if (Ext.Array.contains(pizza.content, filter))
-            pizza_shown.push(pizza);
-
-    });
-    $pizzaCount.text(pizza_shown.length);
-    //Показати відфільтровані піци
-    showPizzaList(pizza_shown);
-}
-
-function filterVega() {
-    //Масив куди потраплять піци які треба показати
-    var pizza_shown = [];
-
-    Pizza_List.forEach(function (pizza) {
-        //Якщо піка відповідає фільтру
-        //pizza_shown.push(pizza);
-
-
-    });
+    if (filter === "vega") {
+        Pizza_List.forEach(function (pizza) {
+            if (!pizza.content.hasOwnProperty('meat') && !pizza.content.hasOwnProperty('ocean'))
+                pizza_shown.push(pizza);
+        });
+    }
+    else {
+        Pizza_List.forEach(function (pizza) {
+            //Якщо піца відповідає фільтру
+            if (pizza.content.hasOwnProperty(filter)) {
+                //console.log("pizza", pizza.title);
+                pizza_shown.push(pizza);
+            }
+        });
+    }
     $pizzaCount.text(pizza_shown.length);
     //Показати відфільтровані піци
     showPizzaList(pizza_shown);
@@ -374,28 +366,29 @@ function filterVega() {
 function initialiseMenu() {
     //Показуємо усі піци
     showPizzaList(Pizza_List);
+    var quantity = Pizza_List.pizzaLengt;
+    $pizzaCount.text(8);
+    console.log("pizzaCount", quantity);
 }
 
 var $filterMenu = $('.nav-pills');
-var $filter = $filterMenu.find('li');
-console.log("filter ", $filter);
+var $filter = $filterMenu.find('li a');
 
 $filter.click(function () {
-    $(this).addClass('active').siblings().removeClass('active');
-    console.log("li", $(this).find('a'));
-    console.log("val ", $(this).find('a').value());
-    if ($(this).val() === "Усі")
+    $(this).parent().addClass('active').siblings().removeClass('active');
+    //console.log("val ", $(this).text());
+    if ($(this).text() === "Усі")
         initialiseMenu();
-    else if ($(this).val === "М'ясні")
+    else if ($(this).text() === "М'ясні")
         filterPizza("meat");
-    else if ($(this).val === "З ананасами")
+    else if ($(this).text() === "З ананасами")
         filterPizza("pineapple");
-    else if ($(this).val === "З грибами")
+    else if ($(this).text() === "З грибами")
         filterPizza("mushroom");
-    else if ($(this).val === "З морепродуктами")
+    else if ($(this).text() === "З морепродуктами")
         filterPizza("ocean");
-    else if ($(this).val === "Вегетаріанські")
-        filterVega();
+    else if ($(this).text() === "Вегетаріанські")
+        filterPizza("vega");
 });
 
 
