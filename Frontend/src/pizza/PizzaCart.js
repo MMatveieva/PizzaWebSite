@@ -16,20 +16,34 @@ var Cart = [];
 var $cart = $("#cart");
 var $buyPanel = $(".buy-panel");
 
-function addToCart(pizza, size) {
-    //Додавання однієї піци в кошик покупок
+var $totalPrice = $('.order-price-money');
+var totalprice = 0;
+var $pizzaInCart = $('.left-count-label');
 
-    //Приклад реалізації, можна робити будь-яким іншим способом
+function addToCart(pizza, size) {
+    var p = 0;
+    if (size === "big_size") {
+        p = pizza.big_size.price;
+        totalprice += pizza.big_size.price;
+    } else {
+        p = pizza.small_size.price;
+        totalprice += pizza.small_size.price;
+    }
+    //Додавання однієї піци в кошик покупок
     Cart.push({
+        toPay: p,
         pizza: pizza,
         size: size,
-        quantity: 1
+        quantity: 1,
+        money: p
     });
 
     //Оновити вміст кошика на сторінці
     updateCart();
     $buyPanel.find(".order-price-title").removeClass("hidden");
     $buyPanel.find(".order-price-money").removeClass("hidden");
+
+    $totalPrice.text(totalprice + " грн");
 }
 
 function removeFromCart(cart_item) {
@@ -48,6 +62,8 @@ function initialiseCart() {
     updateCart();
     var html_code = Templates.EmptyCart();
     $cart.html(html_code);
+    $pizzaInCart.text(0);
+    $totalPrice.text(totalprice + " грн");
     $buyPanel.find(".order-price-title").addClass("hidden");
     $buyPanel.find(".order-price-money").addClass("hidden");
 }
@@ -70,10 +86,14 @@ function updateCart() {
 
         var $node = $(html_code);
 
-        $node.find(".plus").click(function () {
+        $node.find(".plus-button").click(function () {
             //Збільшуємо кількість замовлених піц
             cart_item.quantity += 1;
-
+            cart_item.toPay += cart_item.money;
+            totalprice += cart_item.money;
+            $totalPrice.text(totalprice + " грн");
+            $node.find('.price').text(cart_item.toPay + "грн");
+            $node.find('.quantity').text(cart_item.quantity);
             //Оновлюємо відображення
             updateCart();
         });
@@ -81,8 +101,8 @@ function updateCart() {
         $cart.append($node);
     }
 
+    $pizzaInCart.text(Cart.length);
     Cart.forEach(showOnePizzaInCart);
-
 }
 
 exports.removeFromCart = removeFromCart;

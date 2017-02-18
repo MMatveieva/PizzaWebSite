@@ -1,13 +1,3 @@
-<!--<div>
-    <%= pizza.title %> (<%= size %>)
-    <div>Ціна: <%= pizza[size].price %> грн.</div>
-    <div>
-        <button class="btn btn-danger minus">-</button>
-        <span class="label label-default"><%= quantity %></span>
-        <button class="btn btn-success plus">+</button>
-    </div>
-</div>-->
-
 <%
 function getSizeTitle(pizza) {
     if (size == 'big_size')
@@ -32,14 +22,6 @@ function getWeight(pizza) {
         return pizza.small_size.weight;
 }
 %>
-<%
-function getPrice(pizza) {
-    if (size == 'big_size')
-        return pizza.big_size.price;
-    if (size == 'small_size')
-        return pizza.small_size.price;
-}
-%>
 
 <div class="ordered-pizza">
     <img class="order-image" src=<%= pizza.icon %>>
@@ -55,11 +37,11 @@ function getPrice(pizza) {
                 </span>
     </div>
     <div class="order-actions">
-        <span class="price"><%= getPrice(pizza) %>грн</span>
+        <span class="price"><%= toPay %>грн</span>
         <button class="btn btn-danger round-button minus-button">
             <span class="glyphicon glyphicon-minus"></span>
         </button>
-        <span class="quantity">1</span>
+        <span class="quantity"><%= quantity %></span>
         <button class="btn btn-success round-button plus-button">
             <span class="glyphicon glyphicon-plus"></span>
         </button>
