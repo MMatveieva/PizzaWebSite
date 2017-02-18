@@ -173,5 +173,5 @@ var pizza_info = [
         }
     }
 ];
-
+exports.pizzaLengt = pizza_info.length;
 module.exports = pizza_info;

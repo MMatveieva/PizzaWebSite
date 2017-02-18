@@ -28,6 +28,8 @@ function addToCart(pizza, size) {
 
     //Оновити вміст кошика на сторінці
     updateCart();
+    $buyPanel.find(".order-price-title").removeClass("hidden");
+    $buyPanel.find(".order-price-money").removeClass("hidden");
 }
 
 function removeFromCart(cart_item) {
