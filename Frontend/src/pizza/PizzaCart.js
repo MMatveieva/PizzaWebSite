@@ -90,6 +90,11 @@ function initialiseCart() {
     initialiseEmptyCart();
 }
 
+$(".clear-order").click(function () {
+    Cart.splice(0, Cart.length);
+    initialiseEmptyCart();
+});
+
 function getPizzaInCart() {
     //Повертає піци які зберігаються в кошику
     return Cart;
