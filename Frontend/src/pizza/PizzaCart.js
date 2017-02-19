@@ -58,6 +58,7 @@ function addToCart(pizza, size) {
     updateCart();
     $buyPanel.find(".order-price-title").removeClass("hidden");
     $totalPrice.removeClass("hidden");
+    $('.or-button').removeClass("disabled");
     $totalPrice.text(totalprice + " грн");
 }
 
@@ -81,6 +82,7 @@ function initialiseEmptyCart() {
     $pizzaInCart.text(0);
     $buyPanel.find(".order-price-title").addClass("hidden");
     $totalPrice.addClass("hidden");
+    $('.or-button').addClass("disabled");
 }
 
 function initialiseCart() {
