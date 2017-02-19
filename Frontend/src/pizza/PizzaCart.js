@@ -56,16 +56,29 @@ function addToCart(pizza, size) {
     //Оновити вміст кошика на сторінці
     updateCart();
     $buyPanel.find(".order-price-title").removeClass("hidden");
-    $buyPanel.find(".order-price-money").removeClass("hidden");
+    $totalPrice.removeClass("hidden");
     $totalPrice.text(totalprice + " грн");
 }
 
 function removeFromCart(cart_item) {
     //Видалити піцу з кошика
-    //TODO: треба зробити
-
+    var index = Cart.indexOf(cart_item);
+    console.log("index", index);
+    Cart.splice(index, 1);
+    totalprice -= cart_item.money;
+    $totalPrice.text(totalprice + " грн");
     //Після видалення оновити відображення
-    updateCart();
+    if (Cart.length > 0)
+        updateCart();
+    else initialiseEmptyCart();
+}
+
+function initialiseEmptyCart() {
+    var html_code = Templates.EmptyCart();
+    $cart.html(html_code);
+    $pizzaInCart.text(0);
+    $buyPanel.find(".order-price-title").addClass("hidden");
+    $totalPrice.addClass("hidden");
 }
 
 function initialiseCart() {
@@ -74,12 +87,7 @@ function initialiseCart() {
     //TODO: ...
 
     updateCart();
-    var html_code = Templates.EmptyCart();
-    $cart.html(html_code);
-    $pizzaInCart.text(0);
-    $totalPrice.text(totalprice + " грн");
-    $buyPanel.find(".order-price-title").addClass("hidden");
-    $buyPanel.find(".order-price-money").addClass("hidden");
+    initialiseEmptyCart();
 }
 
 function getPizzaInCart() {
@@ -100,19 +108,39 @@ function updateCart() {
 
         var $node = $(html_code);
 
+        var $quantityLabel = $node.find('.quantity');
+        var $priceLabel = $node.find('.price');
+
         $node.find(".plus-button").click(function () {
             //Збільшуємо кількість замовлених піц
             cart_item.quantity += 1;
             cart_item.toPay += cart_item.money;
             totalprice += cart_item.money;
             $totalPrice.text(totalprice + " грн");
-            $node.find('.price').text(cart_item.toPay + "грн");
-            $node.find('.quantity').text(cart_item.quantity);
-            console.log("Cart", Cart);
+            $priceLabel.text(cart_item.toPay + "грн");
+            $quantityLabel.text(cart_item.quantity);
             //Оновлюємо відображення
             updateCart();
         });
 
+        $node.find(".minus-button").click(function () {
+            if (cart_item.quantity > 1) {
+                cart_item.quantity--;
+                cart_item.toPay -= cart_item.money;
+                totalprice -= cart_item.money;
+                $totalPrice.text(totalprice + " грн");
+                $priceLabel.text(cart_item.toPay + "грн");
+                $quantityLabel.text(cart_item.quantity);
+                //Оновлюємо відображення
+                updateCart();
+            } else {
+                removeFromCart(cart_item);
+            }
+        });
+
+        $node.find(".delete-button").click(function () {
+            removeFromCart(cart_item);
+        });
         $cart.append($node);
     }
 
