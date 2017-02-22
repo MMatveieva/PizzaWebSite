@@ -60,6 +60,7 @@ function addToCart(pizza, size) {
     $totalPrice.removeClass("hidden");
     $('.or-button').removeClass("disabled");
     $totalPrice.text(totalprice + " грн");
+
 }
 
 function removeFromCart(cart_item) {
@@ -161,6 +162,8 @@ function updateCart() {
             removeFromCart(cart_item);
         });
         $cart.append($node);
+       // $node.hide();
+       // $node.fadeIn(200);
     }
 
     $pizzaInCart.text(Cart.length);

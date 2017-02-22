@@ -174,7 +174,7 @@ var pizza_info = [
         }
     }
 ];
-exports.pizzaLength = pizza_info.length;
+//module.exports.pizzaLength = pizza_info.length;
 module.exports = pizza_info;
 },{}],2:[function(require,module,exports){
 /**
@@ -286,6 +286,7 @@ function addToCart(pizza, size) {
     $totalPrice.removeClass("hidden");
     $('.or-button').removeClass("disabled");
     $totalPrice.text(totalprice + " грн");
+
 }
 
 function removeFromCart(cart_item) {
@@ -387,6 +388,8 @@ function updateCart() {
             removeFromCart(cart_item);
         });
         $cart.append($node);
+       // $node.hide();
+       // $node.fadeIn(200);
     }
 
     $pizzaInCart.text(Cart.length);
@@ -427,9 +430,11 @@ function showPizzaList(list) {
 
         $node.find(".buy-big").click(function () {
             PizzaCart.addToCart(pizza, PizzaCart.PizzaSize.Big);
+            return false;
         });
         $node.find(".buy-small").click(function () {
             PizzaCart.addToCart(pizza, PizzaCart.PizzaSize.Small);
+            return false;
         });
         // console.log("New pizza", pizza.title);
         $pizza_list.append($node);
@@ -465,8 +470,8 @@ function filterPizza(filter) {
 function initialiseMenu() {
     //Показуємо усі піци
     showPizzaList(Pizza_List);
-    var quantity = Pizza_List.pizzaLength;
-    $pizzaCount.text(8);
+    var quantity = Pizza_List.length;
+    $pizzaCount.text(quantity);
     console.log("pizzaCount", quantity);
 }
 
