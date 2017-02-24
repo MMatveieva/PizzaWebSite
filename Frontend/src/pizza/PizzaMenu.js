@@ -10,7 +10,8 @@ var Pizza_List = require('../Pizza_List');
 var $pizza_list = $("#pizza_list");
 
 var $menu = $('.menu');
-var $pizzaCount = $menu.find(".pizza-count");
+var $pizzaCount = $menu.find(".pizza-count")
+var $pizzaLabel = $('.pizza-label');
 
 function showPizzaList(list) {
     //Очищаємо старі піци в кошику
@@ -66,7 +67,8 @@ function initialiseMenu() {
     showPizzaList(Pizza_List);
     var quantity = Pizza_List.length;
     $pizzaCount.text(quantity);
-    console.log("pizzaCount", quantity);
+    $pizzaLabel.text("Усі піци");
+    // console.log("pizzaCount", quantity);
 }
 
 var $filterMenu = $('.nav-pills');
@@ -77,16 +79,26 @@ $filter.click(function () {
     //console.log("val ", $(this).text());
     if ($(this).text() === "Усі")
         initialiseMenu();
-    else if ($(this).text() === "М'ясні")
+    else if ($(this).text() === "М'ясні") {
+        $pizzaLabel.text("М'ясні піци");
         filterPizza("meat");
-    else if ($(this).text() === "З ананасами")
+    }
+    else if ($(this).text() === "З ананасами") {
+        $pizzaLabel.text("Піци з ананасами");
         filterPizza("pineapple");
-    else if ($(this).text() === "З грибами")
+    }
+    else if ($(this).text() === "З грибами") {
+        $pizzaLabel.text("Піци з грибами");
         filterPizza("mushroom");
-    else if ($(this).text() === "З морепродуктами")
+    }
+    else if ($(this).text() === "З морепродуктами") {
+        $pizzaLabel.text("Піци з морепродуктами");
         filterPizza("ocean");
-    else if ($(this).text() === "Вегетаріанські")
+    }
+    else if ($(this).text() === "Вегетаріанські") {
+        $pizzaLabel.text("Вегетаріанські піци");
         filterPizza("vega");
+    }
 });
 
 

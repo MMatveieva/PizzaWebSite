@@ -1,0 +1,45 @@
+<%
+function getSizeTitle(pizza) {
+    if (size == 'big_size')
+        return 'Велика';
+    if (size == 'small_size')
+        return 'Мала';
+}
+%>
+<%
+function getSize(pizza) {
+    if (size == 'big_size')
+        return pizza.big_size.size;
+    if (size == 'small_size')
+        return pizza.small_size.size;
+}
+%>
+<%
+function getWeight(pizza) {
+    if (size == 'big_size')
+        return pizza.big_size.weight;
+    if (size == 'small_size')
+        return pizza.small_size.weight;
+}
+%>
+
+<div class="ordered-pizza">
+    <img class="order-image" src=<%= pizza.icon %>>
+    <div class="pizza-order-title"><%= pizza.title %> (<%= getSizeTitle(pizza) %>)</div>
+    <div class="order-details">
+                <span class="pizza-size">
+                    <img src="assets/images/size-icon.svg">
+                    <span class="size"><%= getSize(pizza) %></span>
+                </span>
+        <span class="pizza-weight">
+                    <img src="assets/images/weight.svg">
+                    <span class="weight"><%= getWeight(pizza) %></span>
+                </span>
+    </div>
+    <div class="order-actions">
+        <span class="price"><%= toPay %>грн</span>
+
+        <span class="quantity"><%= quantity %> піци</span>
+
+    </div>
+</div>

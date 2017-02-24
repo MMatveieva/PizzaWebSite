@@ -3,6 +3,7 @@
  */
 var Templates = require('../Templates');
 var Storage = require('../Storage');
+var PizzaOrder = require('./PizzaOrder');
 
 //Перелік розмірів піци
 var PizzaSize = {
@@ -13,7 +14,7 @@ var PizzaSize = {
 //Змінна в якій зберігаються перелік піц в кошику
 var Cart = [];
 
-//HTML едемент куди будуть додаватися піци
+//HTML елемент куди будуть додаватися піци
 var $cart = $("#cart");
 var $buyPanel = $(".buy-panel");
 
@@ -107,6 +108,11 @@ $(".clear-order").click(function () {
     Cart.splice(0, Cart.length);
     totalprice = 0;
     initialiseEmptyCart();
+});
+
+$('.or-button').click(function () {
+    //location.href = "order.html";
+    PizzaOrder.initialiseOrder();
 });
 
 function getPizzaInCart() {
