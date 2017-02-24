@@ -1,7 +1,41 @@
 <% include common/header.ejs %>
 
-<div class="">
-    Main Page Content
+<div class="cart">
+    <div class="order">
+        <span class="order-label">
+            <span class="title">Замовлення</span>
+            <span class="left-count-label">4</span>
+        </span>
+        <span class="clear-order">Очистити замовлення</span>
+    </div>
+    <div id="cart" class="order-list">
+    </div>
+    <div class="buy-panel">
+        <span class="order-price-title">Сума замовлення</span>
+        <span class="order-price-money">2428 грн</span>
+        <div class="order-button">
+            <button class="btn btn-lg btn-warning btn-block or-button">Замовити</button>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid wrap">
+    <div class="menu">
+        <h2 style="display: inline-block">Усі піци</h2>
+        <span class="pizza-count">8</span>
+    </div>
+    <div class="pizza-types">
+        <ul class="nav nav-pills">
+            <li role="presentation" class="active"><a href="#">Усі</a></li>
+            <li role="presentation"><a href="#">М'ясні</a></li>
+            <li role="presentation"><a href="#">З ананасами</a></li>
+            <li role="presentation"><a href="#">З грибами</a></li>
+            <li role="presentation"><a href="#">З морепродуктами</a></li>
+            <li role="presentation"><a href="#">Вегетаріанські</a></li>
+        </ul>
+    </div>
+    <div class="row" id="pizza_list">
+    </div>
 </div>
 
 <% include common/footer.ejs %>
