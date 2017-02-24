@@ -4,6 +4,7 @@
 
 var Templates = require('../Templates');
 var PizzaCart = require('./PizzaCart');
+var Storage = require('../Storage');
 
 var Cart = [];
 var $order = $("#ordered");
@@ -14,14 +15,12 @@ var $pizzaInCart = $('.left-count-label');
 function initialiseOrder() {
     console.assert("hello");
     $order.html("");
-    Cart = PizzaCart.getPizzaInCart();
-    console.log("Cart", PizzaCart.getPizzaInCart());
+    Cart = Storage.get("cart");
+   // console.log("Cart", PizzaCart.getPizzaInCart());
     var totalprice = 0;
     Cart.forEach(function (cart_item) {
         totalprice += cart_item.toPay;
     });
-    $totalPrice.text(totalprice + " грн");
-    $pizzaInCart.text(Cart.length);
     Cart.forEach(showOnePizzaInOrder);
 }
 

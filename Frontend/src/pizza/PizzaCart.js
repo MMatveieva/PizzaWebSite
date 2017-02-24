@@ -110,10 +110,10 @@ $(".clear-order").click(function () {
     initialiseEmptyCart();
 });
 
-$('.or-button').click(function () {
+/*$('.or-button').click(function () {
     //location.href = "order.html";
     PizzaOrder.initialiseOrder();
-});
+});*/
 
 function getPizzaInCart() {
     //Повертає піци які зберігаються в кошику

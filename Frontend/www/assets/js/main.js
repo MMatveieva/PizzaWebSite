@@ -10,8 +10,7 @@ var pizza_info = [
         title: "Імпреза",
         type: 'М’ясна піца',
         content: {
-            meat: ['балик', 'салямі'],
-            chicken: ['куриця'],
+            meat: ['балик', 'салямі', 'куриця'],
             cheese: ['сир моцарелла', 'сир рокфорд'],
             pineapple: ['ананаси'],
             additional: ['томатна паста', 'петрушка']
@@ -335,10 +334,10 @@ $(".clear-order").click(function () {
     initialiseEmptyCart();
 });
 
-$('.or-button').click(function () {
+/*$('.or-button').click(function () {
     //location.href = "order.html";
     PizzaOrder.initialiseOrder();
-});
+});*/
 
 function getPizzaInCart() {
     //Повертає піци які зберігаються в кошику
@@ -421,7 +420,7 @@ var Pizza_List = require('../Pizza_List');
 var $pizza_list = $("#pizza_list");
 
 var $menu = $('.menu');
-var $pizzaCount = $menu.find(".pizza-count")
+var $pizzaCount = $menu.find(".pizza-count");
 var $pizzaLabel = $('.pizza-label');
 
 function showPizzaList(list) {
@@ -523,6 +522,7 @@ exports.initialiseMenu = initialiseMenu;
 
 var Templates = require('../Templates');
 var PizzaCart = require('./PizzaCart');
+var Storage = require('../Storage');
 
 var Cart = [];
 var $order = $("#ordered");
@@ -533,14 +533,12 @@ var $pizzaInCart = $('.left-count-label');
 function initialiseOrder() {
     console.assert("hello");
     $order.html("");
-    Cart = PizzaCart.getPizzaInCart();
-    console.log("Cart", PizzaCart.getPizzaInCart());
+    Cart = Storage.get("cart");
+   // console.log("Cart", PizzaCart.getPizzaInCart());
     var totalprice = 0;
     Cart.forEach(function (cart_item) {
         totalprice += cart_item.toPay;
     });
-    $totalPrice.text(totalprice + " грн");
-    $pizzaInCart.text(Cart.length);
     Cart.forEach(showOnePizzaInOrder);
 }
 
@@ -552,7 +550,7 @@ function showOnePizzaInOrder(cart_item) {
 }
 
 exports.initialiseOrder = initialiseOrder;
-},{"../Templates":3,"./PizzaCart":5}],8:[function(require,module,exports){
+},{"../Storage":2,"../Templates":3,"./PizzaCart":5}],8:[function(require,module,exports){
 (function () {
 	// Basil
 	var Basil = function (options) {

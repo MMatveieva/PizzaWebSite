@@ -10,7 +10,7 @@ var Pizza_List = require('../Pizza_List');
 var $pizza_list = $("#pizza_list");
 
 var $menu = $('.menu');
-var $pizzaCount = $menu.find(".pizza-count")
+var $pizzaCount = $menu.find(".pizza-count");
 var $pizzaLabel = $('.pizza-label');
 
 function showPizzaList(list) {
