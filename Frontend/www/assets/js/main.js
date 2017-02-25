@@ -212,16 +212,18 @@ exports.PizzaOrder_OneItem = ejs.compile("<%\r\nfunction getSizeTitle(pizza) {\r
  * Created by chaika on 25.01.16.
  */
 
-$(function(){
+$(function () {
     //This code will execute when the page is ready
     var PizzaMenu = require('./pizza/PizzaMenu');
     var PizzaCart = require('./pizza/PizzaCart');
+    var PizzaOrder = require('./pizza/PizzaOrder');
     var Pizza_List = require('./Pizza_List');
 
     PizzaCart.initialiseCart();
     PizzaMenu.initialiseMenu();
+    PizzaOrder.initialiseOrder();
 });
-},{"./Pizza_List":1,"./pizza/PizzaCart":5,"./pizza/PizzaMenu":6}],5:[function(require,module,exports){
+},{"./Pizza_List":1,"./pizza/PizzaCart":5,"./pizza/PizzaMenu":6,"./pizza/PizzaOrder":7}],5:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
