@@ -39,7 +39,13 @@ function getWeight(pizza) {
     <div class="order-actions">
         <span class="price"><%= toPay %>грн</span>
 
-        <span class="quantity"><%= quantity %> піци</span>
+        <span class="quantity"><%= quantity %>
+            <% if (quantity == 1){ %>
+            піца
+            <% } else { %>
+            піци
+            <% } %>
+        </span>
 
     </div>
 </div>
