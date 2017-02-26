@@ -16,7 +16,7 @@ function initialiseOrder() {
     console.assert("hello");
     $order.html("");
     Cart = Storage.get("cart");
-   // console.log("Cart", PizzaCart.getPizzaInCart());
+    // console.log("Cart", PizzaCart.getPizzaInCart());
     var totalprice = 0;
     Cart.forEach(function (cart_item) {
         totalprice += cart_item.toPay;
@@ -29,6 +29,67 @@ function showOnePizzaInOrder(cart_item) {
     var $node = $(html_code);
     console.log($node);
     $order.append($node);
+}
+
+$('.confirm-button').click(function () {
+    var $nameGroup = $('.name-group');
+    var $phoneGroup = $('.phone-group');
+    var $addressGroup = $('.address-group');
+
+    $nameGroup.removeClass("has-success").removeClass("has-error");
+    $phoneGroup.removeClass("has-success").removeClass("has-error");
+    $addressGroup.removeClass("has-success").removeClass("has-error");
+
+    var name = $('.name-input').val();
+    console.log("Name", name);
+    var phone = $('.phone-input').val();
+    console.log("Phone", phone);
+    var address = $('.address-input').val();
+    console.log("Address", address);
+
+    $nameGroup.addClass(checkName(name));
+    $phoneGroup.addClass(checkPhone(phone));
+    $addressGroup.addClass(checkAddress(address));
+});
+
+function checkPhone(phone) {
+    var res = "has-error";
+
+    var phoneReg = /^[0-9]+/;
+    if (phoneReg.test(phone)) {
+        if (phone.match("^+380")) {
+            var update = phone.replace("+380", "");
+            if (update.length == 9)
+                res = "has-success";
+        }
+        else if (phone.match("^0")) {
+            update = phone.replace("0", "");
+            if (update.length == 9)
+                res = "has-success";
+        }
+    }
+    return res;
+}
+
+function checkName(name) {
+    var res = "has-error";
+
+    var nameReg = /^[a-zA-Z-а-яА-Я\s]*$/;
+    if (nameReg.test(name)) {
+
+
+
+        res = "has-success";
+    }
+
+    return res;
+}
+
+function checkAddress(address) {
+    var res = "has-error";
+
+
+    return res;
 }
 
 exports.initialiseOrder = initialiseOrder;
