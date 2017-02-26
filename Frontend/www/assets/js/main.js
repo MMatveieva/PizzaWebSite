@@ -598,7 +598,7 @@ function checkPhone(phone) {
 function checkName(name) {
     var res = "has-error";
 
-    var nameReg = /^[a-zA-Z-а-яА-Я\ії'є\s]*$/;
+    var nameReg = /^[a-zA-Z-а-яА-Яії'є\s]*$/;
     if (nameReg.test(name) && name != "") {
 
 
