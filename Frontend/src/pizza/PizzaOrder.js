@@ -13,7 +13,6 @@ var $totalPrice = $('.order-price-money');
 var $pizzaInCart = $('.left-count-label');
 
 function initialiseOrder() {
-    console.assert("hello");
     $order.html("");
     Cart = Storage.get("cart");
     // console.log("Cart", PizzaCart.getPizzaInCart());
@@ -27,7 +26,6 @@ function initialiseOrder() {
 function showOnePizzaInOrder(cart_item) {
     var html_code = Templates.PizzaOrder_OneItem(cart_item);
     var $node = $(html_code);
-    console.log($node);
     $order.append($node);
 }
 
@@ -39,6 +37,10 @@ $('.confirm-button').click(function () {
     $nameGroup.removeClass("has-success").removeClass("has-error");
     $phoneGroup.removeClass("has-success").removeClass("has-error");
     $addressGroup.removeClass("has-success").removeClass("has-error");
+
+    $('.name-warning').addClass("hidden");
+    $('.phone-warning').addClass("hidden");
+    $('.address-warning').addClass("hidden");
 
     var name = $('.name-input').val();
     console.log("Name", name);
@@ -55,40 +57,46 @@ $('.confirm-button').click(function () {
 function checkPhone(phone) {
     var res = "has-error";
 
-    var phoneReg = /^[0-9]+/;
-    if (phoneReg.test(phone)) {
-        if (phone.match("^+380")) {
+    var phoneReg = /^[0-9+]/;
+    if (phoneReg.test(phone) && phone != "") {
+        if (phone.startsWith("+380")) {
             var update = phone.replace("+380", "");
             if (update.length == 9)
                 res = "has-success";
         }
-        else if (phone.match("^0")) {
+        else if (phone.startsWith("0")) {
             update = phone.replace("0", "");
             if (update.length == 9)
                 res = "has-success";
         }
     }
-    return res;
+    if (res == "has-error")
+        $('.phone-warning').removeClass("hidden");
+        return res;
 }
 
 function checkName(name) {
     var res = "has-error";
 
-    var nameReg = /^[a-zA-Z-а-яА-Я\s]*$/;
-    if (nameReg.test(name)) {
-
+    var nameReg = /^[a-zA-Z-а-яА-Я\ії'є\s]*$/;
+    if (nameReg.test(name) && name != "") {
 
 
         res = "has-success";
     }
-
+    if (res == "has-error")
+        $('.name-warning').removeClass("hidden");
     return res;
 }
 
 function checkAddress(address) {
     var res = "has-error";
+    if (address != "") {
+        res = "has-success";
+    }
 
-
+    if (res == "has-error")
+        $('.address-warning').removeClass("hidden");
     return res;
 }
 
