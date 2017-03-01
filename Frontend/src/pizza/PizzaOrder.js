@@ -5,6 +5,7 @@
 var Templates = require('../Templates');
 var PizzaCart = require('./PizzaCart');
 var Storage = require('../Storage');
+var API = require('../API');
 
 var Cart = [];
 var $order = $("#ordered");
@@ -33,30 +34,41 @@ var $nameGroup = $('.name-group');
 var $phoneGroup = $('.phone-group');
 var $addressGroup = $('.address-group');
 
+var $nameWarning = $('.name-warning');
+var $phoneWarning = $('.phone-warning');
+var $addressWarning = $('.address-warning');
+
+var $nameInput = $('.name-input');
+var $phoneInput = $('.phone-input');
+var $addressInput = $('.address-input');
+
 $('.confirm-button').click(function () {
     $nameGroup.removeClass("has-success").removeClass("has-error");
     $phoneGroup.removeClass("has-success").removeClass("has-error");
     $addressGroup.removeClass("has-success").removeClass("has-error");
 
-    $('.name-warning').addClass("hidden");
-    $('.phone-warning').addClass("hidden");
-    $('.address-warning').addClass("hidden");
+    $nameWarning.addClass("hidden");
+    $phoneWarning.addClass("hidden");
+    $addressWarning.addClass("hidden");
 
-    var name = $('.name-input').val();
+    var name = $nameInput.val();
     console.log("Name", name);
-    var phone = $('.phone-input').val();
+    var phone = $phoneInput.val();
     console.log("Phone", phone);
-    var address = $('.address-input').val();
+    var address = $addressInput.val();
     console.log("Address", address);
 
     $nameGroup.addClass(checkName(name));
     $phoneGroup.addClass(checkPhone(phone));
     $addressGroup.addClass(checkAddress(address));
-});
 
-$('.name-input').keyup(function () {
+    if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success") && $addressGroup.hasClass("has-success")){
+        orderPizzas();
+    }
+        });
+
+$nameInput.keyup(function () {
     $nameGroup.removeClass("has-success").removeClass("has-error");
-    var $nameWarning = $('.name-warning');
     $nameWarning.addClass("hidden");
     var name = $(this).val();
     $nameGroup.addClass(checkName(name));
@@ -66,9 +78,8 @@ $('.name-input').keyup(function () {
     }
 });
 
-$('.phone-input').keyup(function () {
+$phoneInput.keyup(function () {
     $phoneGroup.removeClass("has-success").removeClass("has-error");
-    var $phoneWarning = $('.phone-warning');
     $phoneWarning.addClass("hidden");
     var phone = $(this).val();
     $phoneGroup.addClass(checkPhone(phone));
@@ -78,9 +89,8 @@ $('.phone-input').keyup(function () {
     }
 });
 
-$('.address-input').keyup(function () {
+$addressInput.keyup(function () {
     $addressGroup.removeClass("has-success").removeClass("has-error");
-    var $addressWarning = $('.address-warning');
     $addressWarning.addClass("hidden");
     var address = $(this).val();
     $addressGroup.addClass(checkAddress(address));
@@ -107,7 +117,7 @@ function checkPhone(phone) {
         }
     }
     if (res == "has-error")
-        $('.phone-warning').removeClass("hidden");
+        $phoneWarning.removeClass("hidden");
     return res;
 }
 
@@ -117,11 +127,10 @@ function checkName(name) {
     var nameReg = /^[a-zA-Z-а-яА-Яії'є\s]*$/;
     if (nameReg.test(name) && name != "") {
 
-
         res = "has-success";
     }
     if (res == "has-error")
-        $('.name-warning').removeClass("hidden");
+        $nameWarning.removeClass("hidden");
     return res;
 }
 
@@ -130,10 +139,14 @@ function checkAddress(address) {
     if (address != "") {
         res = "has-success";
     }
-
     if (res == "has-error")
-        $('.address-warning').removeClass("hidden");
+        $addressWarning.removeClass("hidden");
     return res;
+}
+
+function orderPizzas() {
+    var order = {};
+
 }
 
 exports.initialiseOrder = initialiseOrder;

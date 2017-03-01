@@ -110,10 +110,10 @@ $(".clear-order").click(function () {
     initialiseEmptyCart();
 });
 
-/*$('.or-button').click(function () {
+$('.or-button').click(function () {
     //location.href = "order.html";
     PizzaOrder.initialiseOrder();
-});*/
+});
 
 function getPizzaInCart() {
     //Повертає піци які зберігаються в кошику
@@ -168,8 +168,8 @@ function updateCart() {
             removeFromCart(cart_item);
         });
         $cart.append($node);
-       // $node.hide();
-       // $node.fadeIn(200);
+        // $node.hide();
+        // $node.fadeIn(200);
     }
 
     $pizzaInCart.text(Cart.length);
@@ -183,3 +183,4 @@ exports.getPizzaInCart = getPizzaInCart;
 exports.initialiseCart = initialiseCart;
 
 exports.PizzaSize = PizzaSize;
+exports.money = totalprice;

@@ -4,7 +4,17 @@
 
 var Templates = require('../Templates');
 var PizzaCart = require('./PizzaCart');
-var Pizza_List = require('../Pizza_List');
+var API = require('../API');
+var Pizza_List;
+API.getPizzaList(function (err, data) {
+    if (err) {
+        console.log("Cannot find PizzaList")
+    }
+    Pizza_List = data;
+    console.log(Pizza_List);
+    initialiseMenu();
+});
+//var Pizza_List = require('../Pizza_List');
 
 //HTML елемент куди будуть додаватися піци
 var $pizza_list = $("#pizza_list");
