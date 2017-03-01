@@ -549,11 +549,11 @@ function showOnePizzaInOrder(cart_item) {
     $order.append($node);
 }
 
-$('.confirm-button').click(function () {
-    var $nameGroup = $('.name-group');
-    var $phoneGroup = $('.phone-group');
-    var $addressGroup = $('.address-group');
+var $nameGroup = $('.name-group');
+var $phoneGroup = $('.phone-group');
+var $addressGroup = $('.address-group');
 
+$('.confirm-button').click(function () {
     $nameGroup.removeClass("has-success").removeClass("has-error");
     $phoneGroup.removeClass("has-success").removeClass("has-error");
     $addressGroup.removeClass("has-success").removeClass("has-error");
@@ -574,6 +574,42 @@ $('.confirm-button').click(function () {
     $addressGroup.addClass(checkAddress(address));
 });
 
+$('.name-input').keyup(function () {
+    $nameGroup.removeClass("has-success").removeClass("has-error");
+    var $nameWarning = $('.name-warning');
+    $nameWarning.addClass("hidden");
+    var name = $(this).val();
+    $nameGroup.addClass(checkName(name));
+    if (name == "") {
+        $nameGroup.removeClass("has-success").removeClass("has-error");
+        $nameWarning.addClass("hidden");
+    }
+});
+
+$('.phone-input').keyup(function () {
+    $phoneGroup.removeClass("has-success").removeClass("has-error");
+    var $phoneWarning = $('.phone-warning');
+    $phoneWarning.addClass("hidden");
+    var phone = $(this).val();
+    $phoneGroup.addClass(checkName(phone));
+    if (phone == "") {
+        $phoneGroup.removeClass("has-success").removeClass("has-error");
+        $phoneWarning.addClass("hidden");
+    }
+});
+
+$('.address-input').keyup(function () {
+    $addressGroup.removeClass("has-success").removeClass("has-error");
+    var $addressWarning = $('.phone-warning');
+    $addressWarning.addClass("hidden");
+    var address = $(this).val();
+    $addressGroup.addClass(checkName(phone));
+    if (phone == "") {
+        $addressGroup.removeClass("has-success").removeClass("has-error");
+        $addressWarning.addClass("hidden");
+    }
+});
+
 function checkPhone(phone) {
     var res = "has-error";
 
@@ -592,7 +628,7 @@ function checkPhone(phone) {
     }
     if (res == "has-error")
         $('.phone-warning').removeClass("hidden");
-        return res;
+    return res;
 }
 
 function checkName(name) {
