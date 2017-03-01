@@ -85,8 +85,8 @@ $(function () {
     //var Pizza_List = require('./Pizza_List');
 
     PizzaCart.initialiseCart();
-    PizzaMenu.initialiseMenu();
     PizzaOrder.initialiseOrder();
+    PizzaMenu.initialiseMenu();
 });
 },{"./pizza/PizzaCart":5,"./pizza/PizzaMenu":6,"./pizza/PizzaOrder":7}],5:[function(require,module,exports){
 /**
@@ -401,6 +401,7 @@ exports.initialiseMenu = initialiseMenu;
 var Templates = require('../Templates');
 var PizzaCart = require('./PizzaCart');
 var Storage = require('../Storage');
+var API = require('../API');
 
 var Cart = [];
 var $order = $("#ordered");
@@ -456,6 +457,10 @@ $('.confirm-button').click(function () {
     $nameGroup.addClass(checkName(name));
     $phoneGroup.addClass(checkPhone(phone));
     $addressGroup.addClass(checkAddress(address));
+
+    if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success") && $addressGroup.hasClass("has-success")) {
+        orderPizzas(name, phone, address);
+    }
 });
 
 $nameInput.keyup(function () {
@@ -535,13 +540,25 @@ function checkAddress(address) {
     return res;
 }
 
-function orderPizzas() {
-    var order = {};
-
+function orderPizzas(nameI, phoneI, addressI) {
+    var order = {
+        name: nameI,
+        phone: phoneI,
+        address: addressI,
+        pizzas: Cart,
+        money: PizzaCart.money
+    };
+    API.createOrder(order, function (err, data) {
+        if (err) {
+            alert("Order failed. Please, try again");
+        } else {
+            alert("Order success: " + JSON.stringify(data) + ", order: " + order);
+        }
+    })
 }
 
 exports.initialiseOrder = initialiseOrder;
-},{"../Storage":2,"../Templates":3,"./PizzaCart":5}],8:[function(require,module,exports){
+},{"../API":1,"../Storage":2,"../Templates":3,"./PizzaCart":5}],8:[function(require,module,exports){
 (function () {
 	// Basil
 	var Basil = function (options) {

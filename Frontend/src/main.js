@@ -10,6 +10,6 @@ $(function () {
     //var Pizza_List = require('./Pizza_List');
 
     PizzaCart.initialiseCart();
-    PizzaMenu.initialiseMenu();
     PizzaOrder.initialiseOrder();
+    PizzaMenu.initialiseMenu();
 });

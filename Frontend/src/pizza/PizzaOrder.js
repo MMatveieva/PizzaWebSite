@@ -62,10 +62,10 @@ $('.confirm-button').click(function () {
     $phoneGroup.addClass(checkPhone(phone));
     $addressGroup.addClass(checkAddress(address));
 
-    if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success") && $addressGroup.hasClass("has-success")){
-        orderPizzas();
+    if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success") && $addressGroup.hasClass("has-success")) {
+        orderPizzas(name, phone, address);
     }
-        });
+});
 
 $nameInput.keyup(function () {
     $nameGroup.removeClass("has-success").removeClass("has-error");
@@ -144,9 +144,21 @@ function checkAddress(address) {
     return res;
 }
 
-function orderPizzas() {
-    var order = {};
-
+function orderPizzas(nameI, phoneI, addressI) {
+    var order = {
+        name: nameI,
+        phone: phoneI,
+        address: addressI,
+        pizzas: Cart,
+        money: PizzaCart.money
+    };
+    API.createOrder(order, function (err, data) {
+        if (err) {
+            alert("Order failed. Please, try again");
+        } else {
+            alert("Order success: " + JSON.stringify(data));
+        }
+    })
 }
 
 exports.initialiseOrder = initialiseOrder;
