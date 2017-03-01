@@ -13,11 +13,13 @@ var $order = $("#ordered");
 var $totalPrice = $('.order-price-money');
 var $pizzaInCart = $('.left-count-label');
 
+var totalprice = 0;
+
 function initialiseOrder() {
     $order.html("");
     Cart = Storage.get("cart");
     // console.log("Cart", PizzaCart.getPizzaInCart());
-    var totalprice = 0;
+
     Cart.forEach(function (cart_item) {
         totalprice += cart_item.toPay;
     });
@@ -150,8 +152,9 @@ function orderPizzas(nameI, phoneI, addressI) {
         phone: phoneI,
         address: addressI,
         pizzas: Cart,
-        money: PizzaCart.money
+        money: totalprice
     };
+    console.log("money " + order.money);
     API.createOrder(order, function (err, data) {
         if (err) {
             alert("Order failed. Please, try again");

@@ -110,9 +110,9 @@ $(".clear-order").click(function () {
     initialiseEmptyCart();
 });
 
+
 $('.or-button').click(function () {
-    //location.href = "order.html";
-    PizzaOrder.initialiseOrder();
+
 });
 
 function getPizzaInCart() {
@@ -183,4 +183,4 @@ exports.getPizzaInCart = getPizzaInCart;
 exports.initialiseCart = initialiseCart;
 
 exports.PizzaSize = PizzaSize;
-exports.money = totalprice;
+//exports.money = totalprice;
