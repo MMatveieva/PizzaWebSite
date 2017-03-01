@@ -591,7 +591,7 @@ $('.phone-input').keyup(function () {
     var $phoneWarning = $('.phone-warning');
     $phoneWarning.addClass("hidden");
     var phone = $(this).val();
-    $phoneGroup.addClass(checkName(phone));
+    $phoneGroup.addClass(checkPhone(phone));
     if (phone == "") {
         $phoneGroup.removeClass("has-success").removeClass("has-error");
         $phoneWarning.addClass("hidden");
@@ -600,11 +600,11 @@ $('.phone-input').keyup(function () {
 
 $('.address-input').keyup(function () {
     $addressGroup.removeClass("has-success").removeClass("has-error");
-    var $addressWarning = $('.phone-warning');
+    var $addressWarning = $('.address-warning');
     $addressWarning.addClass("hidden");
     var address = $(this).val();
-    $addressGroup.addClass(checkName(phone));
-    if (phone == "") {
+    $addressGroup.addClass(checkAddress(address));
+    if (address == "") {
         $addressGroup.removeClass("has-success").removeClass("has-error");
         $addressWarning.addClass("hidden");
     }
