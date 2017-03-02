@@ -8,8 +8,12 @@ $(function () {
     var PizzaCart = require('./pizza/PizzaCart');
     var PizzaOrder = require('./pizza/PizzaOrder');
     //var Pizza_List = require('./Pizza_List');
+    var GoogleMap = require('./GoogleMaps');
 
     PizzaCart.initialiseCart();
     PizzaOrder.initialiseOrder();
     //PizzaMenu.initialiseMenu();
+
+    //Коли сторінка завантажилась
+    google.maps.event.addDomListener(window, 'load', GoogleMap.initialize);
 });

@@ -42,6 +42,102 @@ exports.createOrder = function(order_info, callback) {
 
 },{}],2:[function(require,module,exports){
 /**
+ * Created by Mariya on 02.03.2017.
+ */
+
+var mapp;
+
+function initialize() {
+//Тут починаємо працювати з картою
+    var mapProp = {
+        center: new google.maps.LatLng(50.464379, 30.519131),
+        zoom: 16
+    };
+    var html_element = document.getElementById("googleMap");
+    mapp = new google.maps.Map(html_element, mapProp);
+    console.log("MapProp" + html_element);
+//Карта створена і показана
+}
+//Коли сторінка завантажилась
+google.maps.event.addDomListener(window, 'load', initialize);
+
+var point = new google.maps.LatLng(50.464379, 30.519131);
+
+var marker = new google.maps.Marker({
+    position: point,
+    map: mapp, //mapp - це змінна карти створена за допомогою new google.maps.Map(...)
+    icon: "assets/images/map-icon.png"
+});
+
+google.maps.event.addListener(map, 'click', function (me) {
+    var coordinates = me.latLng;
+//coordinates - такий самий об’єкт як створений new google.maps.LatLng(...)
+
+    var marker = new google.maps.Marker({
+        position: coordinates,
+        map: mapp, //mapp - це змінна карти створена за допомогою new google.maps.Map(...)
+        icon: "assets/images/map-icon.png"
+    });
+});
+
+function geocodeLatLng(latlng, callback) {
+//Модуль за роботу з адресою
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({'location': latlng}, function (results, status) {
+        if (status === google.maps.GeocoderStatus.OK && results[1]) {
+            var adress = results[1].formatted_address;
+            callback(null, adress);
+        } else {
+            callback(new Error("Can't find adress"));
+        }
+    });
+}
+
+google.maps.event.addListener(map, 'click', function (me) {
+    var coordinates = me.latLng;
+    geocodeLatLng(coordinates, function (err, adress) {
+        if (!err) {
+//Дізналися адресу
+            console.log(adress);
+        } else {
+            console.log("Немає адреси")
+        }
+    })
+});
+
+function geocodeAddress(adress, callback) {
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({'address': address}, function (results, status) {
+        if (status === google.maps.GeocoderStatus.OK && results[0]) {
+            var coordinates = results[0].geometry.location;
+            callback(null, coordinates);
+        } else {
+            callback(new Error("Can not find the adress"));
+        }
+    });
+}
+
+function calculateRoute(A_latlng, B_latlng, callback) {
+    var directionService = new google.maps.DirectionsService();
+    directionService.route({
+        origin: A_latlng,
+        destination: B_latlng,
+        travelMode: google.maps.TravelMode["DRIVING"]
+    }, function (response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+            var leg = response.routes[0].legs[0];
+            callback(null, {
+                duration: leg.duration
+            });
+        } else {
+            callback(new Error("Can' not find direction"));
+        }
+    });
+}
+
+exports.initialize = initialize();
+},{}],3:[function(require,module,exports){
+/**
  * Created by Mariya on 19.02.2017.
  */
 
@@ -57,7 +153,7 @@ exports.set = function (key, value) {
 };
 
 
-},{"basil.js":8}],3:[function(require,module,exports){
+},{"basil.js":9}],4:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -72,7 +168,7 @@ exports.PizzaCart_OneItem = ejs.compile("<%\r\nfunction getSizeTitle(pizza) {\r\
 exports.EmptyCart = ejs.compile("<div class=\"empty-cart\">\r\n    <p>Пусто в холодильнику?</p>\r\n    <p> Замовте піцу!</p>\r\n</div>");
 
 exports.PizzaOrder_OneItem = ejs.compile("<%\r\nfunction getSizeTitle(pizza) {\r\n    if (size == 'big_size')\r\n        return 'Велика';\r\n    if (size == 'small_size')\r\n        return 'Мала';\r\n}\r\n%>\r\n<%\r\nfunction getSize(pizza) {\r\n    if (size == 'big_size')\r\n        return pizza.big_size.size;\r\n    if (size == 'small_size')\r\n        return pizza.small_size.size;\r\n}\r\n%>\r\n<%\r\nfunction getWeight(pizza) {\r\n    if (size == 'big_size')\r\n        return pizza.big_size.weight;\r\n    if (size == 'small_size')\r\n        return pizza.small_size.weight;\r\n}\r\n%>\r\n\r\n<div class=\"ordered-pizza\">\r\n    <img class=\"order-image\" src=<%= pizza.icon %>>\r\n    <div class=\"pizza-order-title\"><%= pizza.title %> (<%= getSizeTitle(pizza) %>)</div>\r\n    <div class=\"order-details\">\r\n                <span class=\"pizza-size\">\r\n                    <img src=\"assets/images/size-icon.svg\">\r\n                    <span class=\"size\"><%= getSize(pizza) %></span>\r\n                </span>\r\n        <span class=\"pizza-weight\">\r\n                    <img src=\"assets/images/weight.svg\">\r\n                    <span class=\"weight\"><%= getWeight(pizza) %></span>\r\n                </span>\r\n    </div>\r\n    <div class=\"order-actions\">\r\n        <span class=\"price\"><%= toPay %>грн</span>\r\n\r\n        <span class=\"quantity\"><%= quantity %>\r\n            <% if (quantity == 1){ %>\r\n            піца\r\n            <% } else { %>\r\n            піци\r\n            <% } %>\r\n        </span>\r\n\r\n    </div>\r\n</div>");
-},{"ejs":10}],4:[function(require,module,exports){
+},{"ejs":11}],5:[function(require,module,exports){
 /**
  * Created by chaika on 25.01.16.
  */
@@ -83,12 +179,16 @@ $(function () {
     var PizzaCart = require('./pizza/PizzaCart');
     var PizzaOrder = require('./pizza/PizzaOrder');
     //var Pizza_List = require('./Pizza_List');
+    var GoogleMap = require('./GoogleMaps');
 
     PizzaCart.initialiseCart();
     PizzaOrder.initialiseOrder();
     //PizzaMenu.initialiseMenu();
+
+    //Коли сторінка завантажилась
+    google.maps.event.addDomListener(window, 'load', GoogleMap.initialize);
 });
-},{"./pizza/PizzaCart":5,"./pizza/PizzaMenu":6,"./pizza/PizzaOrder":7}],5:[function(require,module,exports){
+},{"./GoogleMaps":2,"./pizza/PizzaCart":6,"./pizza/PizzaMenu":7,"./pizza/PizzaOrder":8}],6:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -275,7 +375,7 @@ exports.initialiseCart = initialiseCart;
 
 exports.PizzaSize = PizzaSize;
 //exports.money = totalprice;
-},{"../Storage":2,"../Templates":3,"./PizzaOrder":7}],6:[function(require,module,exports){
+},{"../Storage":3,"../Templates":4,"./PizzaOrder":8}],7:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -394,7 +494,7 @@ $filter.click(function () {
 exports.filterPizza = filterPizza;
 exports.initialiseMenu = initialiseMenu;
 
-},{"../API":1,"../Templates":3,"./PizzaCart":5}],7:[function(require,module,exports){
+},{"../API":1,"../Templates":4,"./PizzaCart":6}],8:[function(require,module,exports){
 /**
  * Created by Mariya on 24.02.2017.
  */
@@ -562,7 +662,7 @@ function orderPizzas(nameI, phoneI, addressI) {
 }
 
 exports.initialiseOrder = initialiseOrder;
-},{"../API":1,"../Storage":2,"../Templates":3,"./PizzaCart":5}],8:[function(require,module,exports){
+},{"../API":1,"../Storage":3,"../Templates":4,"./PizzaCart":6}],9:[function(require,module,exports){
 (function () {
 	// Basil
 	var Basil = function (options) {
@@ -950,9 +1050,9 @@ exports.initialiseOrder = initialiseOrder;
 
 })();
 
-},{}],9:[function(require,module,exports){
-
 },{}],10:[function(require,module,exports){
+
+},{}],11:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -1752,7 +1852,7 @@ if (typeof window != 'undefined') {
   window.ejs = exports;
 }
 
-},{"../package.json":12,"./utils":11,"fs":9,"path":13}],11:[function(require,module,exports){
+},{"../package.json":13,"./utils":12,"fs":10,"path":14}],12:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -1917,7 +2017,7 @@ exports.cache = {
   }
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports={
   "_args": [
     [
@@ -2032,7 +2132,7 @@ module.exports={
   "version": "2.5.5"
 }
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -2260,7 +2360,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":14}],14:[function(require,module,exports){
+},{"_process":15}],15:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -2442,4 +2542,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[4]);
+},{}]},{},[5]);
