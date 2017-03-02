@@ -12,7 +12,7 @@ $(function () {
 
     PizzaCart.initialiseCart();
     PizzaOrder.initialiseOrder();
-    //PizzaMenu.initialiseMenu();
+    PizzaMenu.initialiseMenu();
 
     //Коли сторінка завантажилась
     google.maps.event.addDomListener(window, 'load', GoogleMap.initialize);

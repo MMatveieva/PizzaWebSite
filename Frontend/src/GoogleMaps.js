@@ -3,10 +3,11 @@
  */
 
 var mapp;
-var home = new google.maps.LatLng(50.464379, 30.519131);
 
 function initialize() {
 //Тут починаємо працювати з картою
+    var home = new google.maps.LatLng(50.464379, 30.519131);
+
     var mapProp = {
         center: home,
         zoom: 16

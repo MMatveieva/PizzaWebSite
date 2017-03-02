@@ -46,10 +46,11 @@ exports.createOrder = function(order_info, callback) {
  */
 
 var mapp;
-var home = new google.maps.LatLng(50.464379, 30.519131);
 
 function initialize() {
 //Тут починаємо працювати з картою
+    var home = new google.maps.LatLng(50.464379, 30.519131);
+
     var mapProp = {
         center: home,
         zoom: 16
@@ -238,7 +239,7 @@ $(function () {
 
     PizzaCart.initialiseCart();
     PizzaOrder.initialiseOrder();
-    //PizzaMenu.initialiseMenu();
+    PizzaMenu.initialiseMenu();
 
     //Коли сторінка завантажилась
     google.maps.event.addDomListener(window, 'load', GoogleMap.initialize);
