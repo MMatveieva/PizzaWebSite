@@ -46,11 +46,12 @@ exports.createOrder = function(order_info, callback) {
  */
 
 var mapp;
+var home = new google.maps.LatLng(50.464379, 30.519131);
 
 function initialize() {
 //Тут починаємо працювати з картою
     var mapProp = {
-        center: new google.maps.LatLng(50.464379, 30.519131),
+        center: home,
         zoom: 16
     };
     var html_element = document.getElementById("googleMap");
@@ -83,6 +84,7 @@ function initialize() {
                     icon: "assets/images/home-icon.png"
                 });
                 console.log(adress);
+                getTime(home, coordinates);
             } else {
                 console.log("Немає адреси")
             }
@@ -173,7 +175,20 @@ function calculateRoute(A_latlng, B_latlng, callback) {
     });
 }
 
-exports.initialize = initialize();
+function getTime(home, marker) {
+    var $time = $('.delivery-time-answer');
+    calculateRoute(home, marker, function (err, data) {
+        if (err) {
+            console.log("Cannot get delivery time");
+            $time.text("невідомий");
+        }
+        $time.text(data.duration.text);
+        //console.log(data);
+    });
+}
+
+exports.initialize = initialize;
+exports.getTime = getTime;
 },{}],3:[function(require,module,exports){
 /**
  * Created by Mariya on 19.02.2017.
@@ -541,6 +556,7 @@ var Templates = require('../Templates');
 var PizzaCart = require('./PizzaCart');
 var Storage = require('../Storage');
 var API = require('../API');
+var GoogleMaps = require('../GoogleMaps');
 
 var Cart = [];
 var $order = $("#ordered");
@@ -602,7 +618,18 @@ $('.confirm-button').click(function () {
     if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success") && $addressGroup.hasClass("has-success")) {
         orderPizzas(name, phone, address);
     }
+
 });
+
+function deliveryTime() {
+    var $time = $('.delivery-address-answer');
+    if (GoogleMaps.getTime != 0) {
+        $time.text(GoogleMaps.getTime);
+    }
+    else {
+        $time.text("Невідомий");
+    }
+}
 
 $nameInput.keyup(function () {
     $nameGroup.removeClass("has-success").removeClass("has-error");
@@ -700,7 +727,7 @@ function orderPizzas(nameI, phoneI, addressI) {
 }
 
 exports.initialiseOrder = initialiseOrder;
-},{"../API":1,"../Storage":3,"../Templates":4,"./PizzaCart":6}],9:[function(require,module,exports){
+},{"../API":1,"../GoogleMaps":2,"../Storage":3,"../Templates":4,"./PizzaCart":6}],9:[function(require,module,exports){
 (function () {
 	// Basil
 	var Basil = function (options) {

@@ -6,6 +6,7 @@ var Templates = require('../Templates');
 var PizzaCart = require('./PizzaCart');
 var Storage = require('../Storage');
 var API = require('../API');
+var GoogleMaps = require('../GoogleMaps');
 
 var Cart = [];
 var $order = $("#ordered");
@@ -67,7 +68,18 @@ $('.confirm-button').click(function () {
     if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success") && $addressGroup.hasClass("has-success")) {
         orderPizzas(name, phone, address);
     }
+
 });
+
+function deliveryTime() {
+    var $time = $('.delivery-address-answer');
+    if (GoogleMaps.getTime != 0) {
+        $time.text(GoogleMaps.getTime);
+    }
+    else {
+        $time.text("Невідомий");
+    }
+}
 
 $nameInput.keyup(function () {
     $nameGroup.removeClass("has-success").removeClass("has-error");

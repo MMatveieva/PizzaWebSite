@@ -3,11 +3,12 @@
  */
 
 var mapp;
+var home = new google.maps.LatLng(50.464379, 30.519131);
 
 function initialize() {
 //Тут починаємо працювати з картою
     var mapProp = {
-        center: new google.maps.LatLng(50.464379, 30.519131),
+        center: home,
         zoom: 16
     };
     var html_element = document.getElementById("googleMap");
@@ -40,6 +41,7 @@ function initialize() {
                     icon: "assets/images/home-icon.png"
                 });
                 console.log(adress);
+                getTime(home, coordinates);
             } else {
                 console.log("Немає адреси")
             }
@@ -130,4 +132,17 @@ function calculateRoute(A_latlng, B_latlng, callback) {
     });
 }
 
-exports.initialize = initialize();
+function getTime(home, marker) {
+    var $time = $('.delivery-time-answer');
+    calculateRoute(home, marker, function (err, data) {
+        if (err) {
+            console.log("Cannot get delivery time");
+            $time.text("невідомий");
+        }
+        $time.text(data.duration.text);
+        //console.log(data);
+    });
+}
+
+exports.initialize = initialize;
+exports.getTime = getTime;
