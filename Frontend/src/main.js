@@ -11,5 +11,5 @@ $(function () {
 
     PizzaCart.initialiseCart();
     PizzaOrder.initialiseOrder();
-    PizzaMenu.initialiseMenu();
+    //PizzaMenu.initialiseMenu();
 });

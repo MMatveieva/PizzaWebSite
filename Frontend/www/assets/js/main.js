@@ -86,7 +86,7 @@ $(function () {
 
     PizzaCart.initialiseCart();
     PizzaOrder.initialiseOrder();
-    PizzaMenu.initialiseMenu();
+    //PizzaMenu.initialiseMenu();
 });
 },{"./pizza/PizzaCart":5,"./pizza/PizzaMenu":6,"./pizza/PizzaOrder":7}],5:[function(require,module,exports){
 /**
@@ -287,7 +287,7 @@ var Pizza_List;
 
 API.getPizzaList(function (err, data) {
     if (err) {
-        console.log("Cannot find PizzaList")
+        console.log("Cannot find PizzaList");
     }
     Pizza_List = data;
     console.log(Pizza_List);

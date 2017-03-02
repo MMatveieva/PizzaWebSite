@@ -9,7 +9,7 @@ var Pizza_List;
 
 API.getPizzaList(function (err, data) {
     if (err) {
-        console.log("Cannot find PizzaList")
+        console.log("Cannot find PizzaList");
     }
     Pizza_List = data;
     console.log(Pizza_List);
