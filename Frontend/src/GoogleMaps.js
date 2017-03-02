@@ -28,6 +28,7 @@ function initialize() {
         icon: "assets/images/map-icon.png"
     });
     markerHome.setMap(null);
+    var deliveryAddress = $('.delivery-address-answer');
 
     google.maps.event.addListener(mapp, 'click', function (me) {
         var coordinates = me.latLng;
@@ -41,6 +42,7 @@ function initialize() {
                     icon: "assets/images/home-icon.png"
                 });
                 console.log(adress);
+                deliveryAddress.text(adress);
                 getTime(home, coordinates);
             } else {
                 console.log("Немає адреси")

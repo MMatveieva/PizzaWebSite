@@ -71,16 +71,6 @@ $('.confirm-button').click(function () {
 
 });
 
-function deliveryTime() {
-    var $time = $('.delivery-address-answer');
-    if (GoogleMaps.getTime != 0) {
-        $time.text(GoogleMaps.getTime);
-    }
-    else {
-        $time.text("Невідомий");
-    }
-}
-
 $nameInput.keyup(function () {
     $nameGroup.removeClass("has-success").removeClass("has-error");
     $nameWarning.addClass("hidden");

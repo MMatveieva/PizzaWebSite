@@ -71,6 +71,7 @@ function initialize() {
         icon: "assets/images/map-icon.png"
     });
     markerHome.setMap(null);
+    var deliveryAddress = $('.delivery-address-answer');
 
     google.maps.event.addListener(mapp, 'click', function (me) {
         var coordinates = me.latLng;
@@ -84,6 +85,7 @@ function initialize() {
                     icon: "assets/images/home-icon.png"
                 });
                 console.log(adress);
+                deliveryAddress.text(adress);
                 getTime(home, coordinates);
             } else {
                 console.log("Немає адреси")
@@ -620,16 +622,6 @@ $('.confirm-button').click(function () {
     }
 
 });
-
-function deliveryTime() {
-    var $time = $('.delivery-address-answer');
-    if (GoogleMaps.getTime != 0) {
-        $time.text(GoogleMaps.getTime);
-    }
-    else {
-        $time.text("Невідомий");
-    }
-}
 
 $nameInput.keyup(function () {
     $nameGroup.removeClass("has-success").removeClass("has-error");
