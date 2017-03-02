@@ -55,7 +55,39 @@ function initialize() {
     };
     var html_element = document.getElementById("googleMap");
     mapp = new google.maps.Map(html_element, mapProp);
-    console.log("MapProp" + html_element);
+
+    var point = new google.maps.LatLng(50.464379, 30.519131);
+
+    var marker = new google.maps.Marker({
+        position: point,
+        map: mapp, //mapp - це змінна карти створена за допомогою new google.maps.Map(...)
+        icon: "assets/images/map-icon.png"
+    });
+
+    var markerHome = new google.maps.Marker({
+        position: point,
+        map: mapp, //mapp - це змінна карти створена за допомогою new google.maps.Map(...)
+        icon: "assets/images/map-icon.png"
+    });
+    markerHome.setMap(null);
+
+    google.maps.event.addListener(mapp, 'click', function (me) {
+        var coordinates = me.latLng;
+        geocodeLatLng(coordinates, function (err, adress) {
+            if (!err) {
+                markerHome.setMap(null);
+//Дізналися адресу
+                markerHome = new google.maps.Marker({
+                    position: coordinates,
+                    map: mapp, //mapp - це змінна карти створена за допомогою new google.maps.Map(...)
+                    icon: "assets/images/home-icon.png"
+                });
+                console.log(adress);
+            } else {
+                console.log("Немає адреси")
+            }
+        })
+    });
 //Карта створена і показана
 }
 //Коли сторінка завантажилась
@@ -69,16 +101,17 @@ var marker = new google.maps.Marker({
     icon: "assets/images/map-icon.png"
 });
 
-google.maps.event.addListener(map, 'click', function (me) {
-    var coordinates = me.latLng;
-//coordinates - такий самий об’єкт як створений new google.maps.LatLng(...)
+/*google.maps.event.addListener(map, 'click', function (me) {
+ var coordinates = me.latLng;
+ //coordinates - такий самий об’єкт як створений new google.maps.LatLng(...)
+ var map =  new google.maps.Map(document.getElementById("googleMap"), mapProp);
 
-    var marker = new google.maps.Marker({
-        position: coordinates,
-        map: mapp, //mapp - це змінна карти створена за допомогою new google.maps.Map(...)
-        icon: "assets/images/map-icon.png"
-    });
-});
+ var marker = new google.maps.Marker({
+ position: coordinates,
+ map: mapp, //mapp - це змінна карти створена за допомогою new google.maps.Map(...)
+ icon: "assets/images/map-icon.png"
+ });
+ });*/
 
 function geocodeLatLng(latlng, callback) {
 //Модуль за роботу з адресою
@@ -93,17 +126,22 @@ function geocodeLatLng(latlng, callback) {
     });
 }
 
-google.maps.event.addListener(map, 'click', function (me) {
-    var coordinates = me.latLng;
-    geocodeLatLng(coordinates, function (err, adress) {
-        if (!err) {
-//Дізналися адресу
-            console.log(adress);
-        } else {
-            console.log("Немає адреси")
-        }
-    })
-});
+/*google.maps.event.addListener(mapp, 'click', function (me) {
+ var coordinates = me.latLng;
+ geocodeLatLng(coordinates, function (err, adress) {
+ if (!err) {
+ //Дізналися адресу
+ var marker = new google.maps.Marker({
+ position: coordinates,
+ map: mapp, //mapp - це змінна карти створена за допомогою new google.maps.Map(...)
+ icon: "assets/images/home-icon.png"
+ });
+ console.log(adress);
+ } else {
+ console.log("Немає адреси")
+ }
+ })
+ });*/
 
 function geocodeAddress(adress, callback) {
     var geocoder = new google.maps.Geocoder();
