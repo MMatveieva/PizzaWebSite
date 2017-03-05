@@ -63,7 +63,7 @@ $('.confirm-button').click(function () {
 
     $nameGroup.addClass(checkName(name));
     $phoneGroup.addClass(checkPhone(phone));
-    $addressGroup.addClass(checkAddress(address));
+    // $addressGroup.addClass(checkAddress(address));
 
     if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success") && $addressGroup.hasClass("has-success")) {
         orderPizzas(name, phone, address);
@@ -97,10 +97,11 @@ $addressInput.keyup(function () {
     $addressGroup.removeClass("has-success").removeClass("has-error");
     $addressWarning.addClass("hidden");
     var address = $(this).val();
-    $addressGroup.addClass(checkAddress(address));
+    checkAddress(address);
     if (address == "") {
         $addressGroup.removeClass("has-success").removeClass("has-error");
         $addressWarning.addClass("hidden");
+        $('.delivery-address-answer').text("невідома");
     }
 });
 
@@ -138,21 +139,26 @@ function checkName(name) {
 }
 
 function checkAddress(address) {
-    var res = "has-error";
+    var $addressDelivery = $('.delivery-address-answer');
 
     GoogleMaps.geocodeAddress(address, function (err, data) {
         if (!err) {
-            res = "has-success";
-            console.log("Has success " + res);
+            console.log("Has success ");
+            $addressGroup.addClass("has-success");
         } else {
-            res = "has-error";
-            console.log("Has error");
+            if (address == "") {
+                $addressGroup.removeClass("has-success").removeClass("has-error");
+                $addressWarning.addClass("hidden");
+                $addressDelivery.text("невідома");
+            } else {
+                console.log("Has error");
+                $addressWarning.removeClass("hidden");
+                $addressGroup.addClass("has-error");
+                $addressDelivery.text("невідома");
+            }
         }
     });
-    if (res == "has-error")
-        $addressWarning.removeClass("hidden");
-    console.log("Res " + res);
-    return res;
+
 }
 
 function orderPizzas(nameI, phoneI, addressI) {

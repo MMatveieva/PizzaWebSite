@@ -120,18 +120,6 @@ var marker = new google.maps.Marker({
     icon: "assets/images/map-icon.png"
 });
 
-/*google.maps.event.addListener(map, 'click', function (me) {
- var coordinates = me.latLng;
- //coordinates - такий самий об’єкт як створений new google.maps.LatLng(...)
- var map =  new google.maps.Map(document.getElementById("googleMap"), mapProp);
-
- var marker = new google.maps.Marker({
- position: coordinates,
- map: mapp, //mapp - це змінна карти створена за допомогою new google.maps.Map(...)
- icon: "assets/images/map-icon.png"
- });
- });*/
-
 function geocodeLatLng(latlng, callback) {
 //Модуль за роботу з адресою
     var geocoder = new google.maps.Geocoder();
@@ -144,23 +132,6 @@ function geocodeLatLng(latlng, callback) {
         }
     });
 }
-
-/*google.maps.event.addListener(mapp, 'click', function (me) {
- var coordinates = me.latLng;
- geocodeLatLng(coordinates, function (err, adress) {
- if (!err) {
- //Дізналися адресу
- var marker = new google.maps.Marker({
- position: coordinates,
- map: mapp, //mapp - це змінна карти створена за допомогою new google.maps.Map(...)
- icon: "assets/images/home-icon.png"
- });
- console.log(adress);
- } else {
- console.log("Немає адреси")
- }
- })
- });*/
 
 function geocodeAddress(address, callback) {
     markerHome.setMap(null);
@@ -661,7 +632,7 @@ $('.confirm-button').click(function () {
 
     $nameGroup.addClass(checkName(name));
     $phoneGroup.addClass(checkPhone(phone));
-    $addressGroup.addClass(checkAddress(address));
+    // $addressGroup.addClass(checkAddress(address));
 
     if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success") && $addressGroup.hasClass("has-success")) {
         orderPizzas(name, phone, address);
@@ -695,10 +666,11 @@ $addressInput.keyup(function () {
     $addressGroup.removeClass("has-success").removeClass("has-error");
     $addressWarning.addClass("hidden");
     var address = $(this).val();
-    $addressGroup.addClass(checkAddress(address));
+    checkAddress(address);
     if (address == "") {
         $addressGroup.removeClass("has-success").removeClass("has-error");
         $addressWarning.addClass("hidden");
+        $('.delivery-address-answer').text("невідома");
     }
 });
 
@@ -728,7 +700,6 @@ function checkName(name) {
 
     var nameReg = /^[a-zA-Z-а-яА-Яії'є\s]*$/;
     if (nameReg.test(name) && name != "") {
-
         res = "has-success";
     }
     if (res == "has-error")
@@ -737,21 +708,26 @@ function checkName(name) {
 }
 
 function checkAddress(address) {
-    var res = "has-error";
+    var $addressDelivery = $('.delivery-address-answer');
 
     GoogleMaps.geocodeAddress(address, function (err, data) {
         if (!err) {
-            res = "has-success";
-            console.log("Has success" + res);
+            console.log("Has success ");
+            $addressGroup.addClass("has-success");
         } else {
-            res = "has-error";
-            console.log("Has error");
+            if (address == "") {
+                $addressGroup.removeClass("has-success").removeClass("has-error");
+                $addressWarning.addClass("hidden");
+                $addressDelivery.text("невідома");
+            } else {
+                console.log("Has error");
+                $addressWarning.removeClass("hidden");
+                $addressGroup.addClass("has-error");
+                $addressDelivery.text("невідома");
+            }
         }
     });
-    if (res == "has-error")
-        $addressWarning.removeClass("hidden");
-    console.log("Res " + res);
-    return res;
+
 }
 
 function orderPizzas(nameI, phoneI, addressI) {
