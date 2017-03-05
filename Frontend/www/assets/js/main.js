@@ -58,11 +58,17 @@ function initialize() {
     var html_element = document.getElementById("googleMap");
     mapp = new google.maps.Map(html_element, mapProp);
 
+    var directionsService = new google.maps.DirectionsService();
+    var directionsDisplay = new google.maps.DirectionsRenderer({
+        map: mapp
+    });
+    directionsDisplay.setOptions({suppressMarkers: true});
+
     var point = new google.maps.LatLng(50.464379, 30.519131);
 
     var marker = new google.maps.Marker({
         position: point,
-        map: mapp, //mapp - це змінна карти створена за допомогою new google.maps.Map(...)
+        map: mapp,
         icon: "assets/images/map-icon.png"
     });
 
@@ -88,6 +94,9 @@ function initialize() {
                 console.log(adress);
                 deliveryAddress.text(adress);
                 getTime(home, coordinates);
+                //  var onChangeHandler = function () {
+                calculateAndDisplayRoute(home, coordinates, directionsService, directionsDisplay);
+                // };
             } else {
                 console.log("Немає адреси")
             }
@@ -174,6 +183,21 @@ function calculateRoute(A_latlng, B_latlng, callback) {
             });
         } else {
             callback(new Error("Can' not find direction"));
+        }
+    });
+}
+
+function calculateAndDisplayRoute(home, marker, directionsService, directionsDisplay) {
+    directionsService.route({
+        origin: home,
+        destination: marker,
+        travelMode: google.maps.TravelMode["DRIVING"]
+    }, function (response, status) {
+        if (status === google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+            // console.log("Display");
+        } else {
+            console.error('Directions request failed due to ' + status);
         }
     });
 }
