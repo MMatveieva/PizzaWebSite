@@ -10,10 +10,11 @@ var Pizza_List;
 API.getPizzaList(function (err, data) {
     if (err) {
         console.log("Cannot find PizzaList");
+    } else {
+        Pizza_List = data;
+        //console.log(Pizza_List);
+        initialiseMenu();
     }
-    Pizza_List = data;
-    console.log(Pizza_List);
-    initialiseMenu();
 });
 //var Pizza_List = require('../Pizza_List');
 

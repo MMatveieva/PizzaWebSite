@@ -46,10 +46,16 @@ exports.createOrder = function(order_info, callback) {
  */
 
 var mapp;
+var home;
+var directionsService;
+var directionsDisplay;
+var markerHome;
+
+var deliveryAddress = $('.delivery-address-answer');
 
 function initialize() {
 //Тут починаємо працювати з картою
-    var home = new google.maps.LatLng(50.464379, 30.519131);
+    home = new google.maps.LatLng(50.464379, 30.519131);
 
     var mapProp = {
         center: home,
@@ -58,8 +64,8 @@ function initialize() {
     var html_element = document.getElementById("googleMap");
     mapp = new google.maps.Map(html_element, mapProp);
 
-    var directionsService = new google.maps.DirectionsService();
-    var directionsDisplay = new google.maps.DirectionsRenderer({
+    directionsService = new google.maps.DirectionsService();
+    directionsDisplay = new google.maps.DirectionsRenderer({
         map: mapp
     });
     directionsDisplay.setOptions({suppressMarkers: true});
@@ -72,17 +78,16 @@ function initialize() {
         icon: "assets/images/map-icon.png"
     });
 
-    var markerHome = new google.maps.Marker({
+    markerHome = new google.maps.Marker({
         position: point,
         map: mapp, //mapp - це змінна карти створена за допомогою new google.maps.Map(...)
         icon: "assets/images/map-icon.png"
     });
     markerHome.setMap(null);
-    var deliveryAddress = $('.delivery-address-answer');
 
     google.maps.event.addListener(mapp, 'click', function (me) {
         var coordinates = me.latLng;
-        geocodeLatLng(coordinates, function (err, adress) {
+        geocodeLatLng(coordinates, function (err, address) {
             if (!err) {
                 markerHome.setMap(null);
 //Дізналися адресу
@@ -91,12 +96,12 @@ function initialize() {
                     map: mapp, //mapp - це змінна карти створена за допомогою new google.maps.Map(...)
                     icon: "assets/images/home-icon.png"
                 });
-                console.log(adress);
-                deliveryAddress.text(adress);
+                //console.log(address);
+                $('#inputAddress').val(address);
+                $('.address-group').addClass("has-success");
+                deliveryAddress.text(address);
                 getTime(home, coordinates);
-                //  var onChangeHandler = function () {
                 calculateAndDisplayRoute(home, coordinates, directionsService, directionsDisplay);
-                // };
             } else {
                 console.log("Немає адреси")
             }
@@ -132,8 +137,8 @@ function geocodeLatLng(latlng, callback) {
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({'location': latlng}, function (results, status) {
         if (status === google.maps.GeocoderStatus.OK && results[1]) {
-            var adress = results[1].formatted_address;
-            callback(null, adress);
+            var address = results[1].formatted_address;
+            callback(null, address);
         } else {
             callback(new Error("Can't find adress"));
         }
@@ -157,14 +162,24 @@ function geocodeLatLng(latlng, callback) {
  })
  });*/
 
-function geocodeAddress(adress, callback) {
+function geocodeAddress(address, callback) {
+    markerHome.setMap(null);
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({'address': address}, function (results, status) {
         if (status === google.maps.GeocoderStatus.OK && results[0]) {
             var coordinates = results[0].geometry.location;
+            console.log("Coordinates by address" + coordinates);
+            getTime(home, coordinates);
+            calculateAndDisplayRoute(home, coordinates, directionsService, directionsDisplay);
+            markerHome = new google.maps.Marker({
+                position: coordinates,
+                map: mapp,
+                icon: "assets/images/home-icon.png"
+            });
+            deliveryAddress.text(address);
             callback(null, coordinates);
         } else {
-            callback(new Error("Can not find the adress"));
+            callback(new Error("Can not find the address"));
         }
     });
 }
@@ -216,6 +231,11 @@ function getTime(home, marker) {
 
 exports.initialize = initialize;
 exports.getTime = getTime;
+exports.geocodeAddress = geocodeAddress;
+exports.calculateAndDisplayRoute = calculateAndDisplayRoute;
+exports.home = home;
+exports.directionsDisplay = directionsDisplay;
+exports.directionsService = directionsService;
 },{}],3:[function(require,module,exports){
 /**
  * Created by Mariya on 19.02.2017.
@@ -468,10 +488,11 @@ var Pizza_List;
 API.getPizzaList(function (err, data) {
     if (err) {
         console.log("Cannot find PizzaList");
+    } else {
+        Pizza_List = data;
+        //console.log(Pizza_List);
+        initialiseMenu();
     }
-    Pizza_List = data;
-    console.log(Pizza_List);
-    initialiseMenu();
 });
 //var Pizza_List = require('../Pizza_List');
 
@@ -717,11 +738,19 @@ function checkName(name) {
 
 function checkAddress(address) {
     var res = "has-error";
-    if (address != "") {
-        res = "has-success";
-    }
+
+    GoogleMaps.geocodeAddress(address, function (err, data) {
+        if (!err) {
+            res = "has-success";
+            console.log("Has success" + res);
+        } else {
+            res = "has-error";
+            console.log("Has error");
+        }
+    });
     if (res == "has-error")
         $addressWarning.removeClass("hidden");
+    console.log("Res " + res);
     return res;
 }
 

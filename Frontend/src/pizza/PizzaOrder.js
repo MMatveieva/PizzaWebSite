@@ -130,7 +130,6 @@ function checkName(name) {
 
     var nameReg = /^[a-zA-Z-а-яА-Яії'є\s]*$/;
     if (nameReg.test(name) && name != "") {
-
         res = "has-success";
     }
     if (res == "has-error")
@@ -140,11 +139,19 @@ function checkName(name) {
 
 function checkAddress(address) {
     var res = "has-error";
-    if (address != "") {
-        res = "has-success";
-    }
+
+    GoogleMaps.geocodeAddress(address, function (err, data) {
+        if (!err) {
+            res = "has-success";
+            console.log("Has success " + res);
+        } else {
+            res = "has-error";
+            console.log("Has error");
+        }
+    });
     if (res == "has-error")
         $addressWarning.removeClass("hidden");
+    console.log("Res " + res);
     return res;
 }
 
