@@ -7,6 +7,7 @@ var PizzaCart = require('./PizzaCart');
 var Storage = require('../Storage');
 var API = require('../API');
 var GoogleMaps = require('../GoogleMaps');
+var LiqPay = require('../LiqPay');
 
 var Cart = [];
 var $order = $("#ordered");
@@ -55,18 +56,34 @@ $('.confirm-button').click(function () {
     $addressWarning.addClass("hidden");
 
     var name = $nameInput.val();
-    console.log("Name", name);
+    //console.log("Name", name);
     var phone = $phoneInput.val();
-    console.log("Phone", phone);
+    //console.log("Phone", phone);
     var address = $addressInput.val();
     console.log("Address", address);
 
+    var $addressDelivery = $('.delivery-address-answer');
+
     $nameGroup.addClass(checkName(name));
     $phoneGroup.addClass(checkPhone(phone));
-    // $addressGroup.addClass(checkAddress(address));
+    checkAddress(address, function (err, data) {
+        if (err) {
+            $addressWarning.removeClass("hidden");
+            $addressGroup.addClass("has-error");
+            $addressDelivery.text("невідома");
+        } else {
+            $addressGroup.addClass("has-success");
+            if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success")) {
+                console.log("Order");
+                orderPizzas(name, phone, address);
+            }
+        }
+    });
 
     if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success") && $addressGroup.hasClass("has-success")) {
+        console.log("Order");
         orderPizzas(name, phone, address);
+
     }
 
 });
@@ -97,12 +114,21 @@ $addressInput.keyup(function () {
     $addressGroup.removeClass("has-success").removeClass("has-error");
     $addressWarning.addClass("hidden");
     var address = $(this).val();
-    checkAddress(address);
-    if (address == "") {
-        $addressGroup.removeClass("has-success").removeClass("has-error");
-        $addressWarning.addClass("hidden");
-        $('.delivery-address-answer').text("невідома");
-    }
+    checkAddress(address, function (err, data) {
+        if (err) {
+            if (err.id == 1) {
+                $addressGroup.removeClass("has-success").removeClass("has-error");
+                $addressWarning.addClass("hidden");
+                $addressDelivery.text("невідома");
+            } else if (err.id == 2) {
+                $addressWarning.removeClass("hidden");
+                $addressGroup.addClass(data);
+                $addressDelivery.text("невідома");
+            }
+        } else {
+            $addressGroup.addClass(data);
+        }
+    });
 });
 
 function checkPhone(phone) {
@@ -138,23 +164,25 @@ function checkName(name) {
     return res;
 }
 
-function checkAddress(address) {
+function checkAddress(address, callback) {
     var $addressDelivery = $('.delivery-address-answer');
 
     GoogleMaps.geocodeAddress(address, function (err, data) {
         if (!err) {
-            console.log("Has success ");
-            $addressGroup.addClass("has-success");
+            //     console.log("Has success ");
+            callback(null, "has-success");
         } else {
             if (address == "") {
-                $addressGroup.removeClass("has-success").removeClass("has-error");
-                $addressWarning.addClass("hidden");
-                $addressDelivery.text("невідома");
+                callback(new Error("Empty input", 1));
+                // $addressGroup.removeClass("has-success").removeClass("has-error");
+                //  $addressWarning.addClass("hidden");
+                // $addressDelivery.text("невідома");
             } else {
-                console.log("Has error");
-                $addressWarning.removeClass("hidden");
-                $addressGroup.addClass("has-error");
-                $addressDelivery.text("невідома");
+                //   console.log("Has error");
+                callback(new Error("No address", 2), "has-error");
+                // $addressWarning.removeClass("hidden");
+                // $addressGroup.addClass("has-error");
+                // $addressDelivery.text("невідома");
             }
         }
     });
@@ -169,14 +197,29 @@ function orderPizzas(nameI, phoneI, addressI) {
         pizzas: Cart,
         money: totalprice
     };
-    console.log("money " + order.money);
+    //console.log("money " + order.money);
     API.createOrder(order, function (err, data) {
         if (err) {
             alert("Order failed. Please, try again");
         } else {
-            alert("Order success: " + JSON.stringify(data));
+            LiqPayCheckout.init({
+                data: data.data,
+                signature: data.signature,
+                embedTo: "#liqpay",
+                mode: "popup" // embed || popup
+            }).on("liqpay.callback", function (data) {
+                console.log(data.status);
+                console.log(data);
+            }).on("liqpay.ready", function (data) {
+// ready
+            }).on("liqpay.close", function (data) {
+// close
+            });
+            //  alert("Order success: " + JSON.stringify(data));
         }
-    })
+    });
+
 }
 
+exports.orderPizzas = orderPizzas;
 exports.initialiseOrder = initialiseOrder;

@@ -139,7 +139,7 @@ function geocodeAddress(address, callback) {
     geocoder.geocode({'address': address}, function (results, status) {
         if (status === google.maps.GeocoderStatus.OK && results[0]) {
             var coordinates = results[0].geometry.location;
-            console.log("Coordinates by address" + coordinates);
+            //console.log("Coordinates by address" + coordinates);
             getTime(home, coordinates);
             calculateAndDisplayRoute(home, coordinates, directionsService, directionsDisplay);
             markerHome = new google.maps.Marker({
@@ -209,6 +209,29 @@ exports.directionsDisplay = directionsDisplay;
 exports.directionsService = directionsService;
 },{}],3:[function(require,module,exports){
 /**
+ * Created by Mariya on 05.03.2017.
+ */
+
+function init() {
+
+    LiqPayCheckout.init({
+        data: "Дані...",
+        signature: "Підпис...",
+        embedTo: "#liqpay",
+        mode: "popup" // embed || popup
+    }).on("liqpay.callback", function (data) {
+        console.log(data.status);
+        console.log(data);
+    }).on("liqpay.ready", function (data) {
+// ready
+    }).on("liqpay.close", function (data) {
+// close
+    });
+}
+
+exports.init = init;
+},{}],4:[function(require,module,exports){
+/**
  * Created by Mariya on 19.02.2017.
  */
 
@@ -224,7 +247,7 @@ exports.set = function (key, value) {
 };
 
 
-},{"basil.js":9}],4:[function(require,module,exports){
+},{"basil.js":10}],5:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -239,7 +262,7 @@ exports.PizzaCart_OneItem = ejs.compile("<%\r\nfunction getSizeTitle(pizza) {\r\
 exports.EmptyCart = ejs.compile("<div class=\"empty-cart\">\r\n    <p>Пусто в холодильнику?</p>\r\n    <p> Замовте піцу!</p>\r\n</div>");
 
 exports.PizzaOrder_OneItem = ejs.compile("<%\r\nfunction getSizeTitle(pizza) {\r\n    if (size == 'big_size')\r\n        return 'Велика';\r\n    if (size == 'small_size')\r\n        return 'Мала';\r\n}\r\n%>\r\n<%\r\nfunction getSize(pizza) {\r\n    if (size == 'big_size')\r\n        return pizza.big_size.size;\r\n    if (size == 'small_size')\r\n        return pizza.small_size.size;\r\n}\r\n%>\r\n<%\r\nfunction getWeight(pizza) {\r\n    if (size == 'big_size')\r\n        return pizza.big_size.weight;\r\n    if (size == 'small_size')\r\n        return pizza.small_size.weight;\r\n}\r\n%>\r\n\r\n<div class=\"ordered-pizza\">\r\n    <img class=\"order-image\" src=<%= pizza.icon %>>\r\n    <div class=\"pizza-order-title\"><%= pizza.title %> (<%= getSizeTitle(pizza) %>)</div>\r\n    <div class=\"order-details\">\r\n                <span class=\"pizza-size\">\r\n                    <img src=\"assets/images/size-icon.svg\">\r\n                    <span class=\"size\"><%= getSize(pizza) %></span>\r\n                </span>\r\n        <span class=\"pizza-weight\">\r\n                    <img src=\"assets/images/weight.svg\">\r\n                    <span class=\"weight\"><%= getWeight(pizza) %></span>\r\n                </span>\r\n    </div>\r\n    <div class=\"order-actions\">\r\n        <span class=\"price\"><%= toPay %>грн</span>\r\n\r\n        <span class=\"quantity\"><%= quantity %>\r\n            <% if (quantity == 1){ %>\r\n            піца\r\n            <% } else { %>\r\n            піци\r\n            <% } %>\r\n        </span>\r\n\r\n    </div>\r\n</div>");
-},{"ejs":11}],5:[function(require,module,exports){
+},{"ejs":12}],6:[function(require,module,exports){
 /**
  * Created by chaika on 25.01.16.
  */
@@ -259,7 +282,7 @@ $(function () {
     //Коли сторінка завантажилась
     google.maps.event.addDomListener(window, 'load', GoogleMap.initialize);
 });
-},{"./GoogleMaps":2,"./pizza/PizzaCart":6,"./pizza/PizzaMenu":7,"./pizza/PizzaOrder":8}],6:[function(require,module,exports){
+},{"./GoogleMaps":2,"./pizza/PizzaCart":7,"./pizza/PizzaMenu":8,"./pizza/PizzaOrder":9}],7:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -446,7 +469,7 @@ exports.initialiseCart = initialiseCart;
 
 exports.PizzaSize = PizzaSize;
 //exports.money = totalprice;
-},{"../Storage":3,"../Templates":4,"./PizzaOrder":8}],7:[function(require,module,exports){
+},{"../Storage":4,"../Templates":5,"./PizzaOrder":9}],8:[function(require,module,exports){
 /**
  * Created by chaika on 02.02.16.
  */
@@ -566,7 +589,7 @@ $filter.click(function () {
 exports.filterPizza = filterPizza;
 exports.initialiseMenu = initialiseMenu;
 
-},{"../API":1,"../Templates":4,"./PizzaCart":6}],8:[function(require,module,exports){
+},{"../API":1,"../Templates":5,"./PizzaCart":7}],9:[function(require,module,exports){
 /**
  * Created by Mariya on 24.02.2017.
  */
@@ -576,6 +599,7 @@ var PizzaCart = require('./PizzaCart');
 var Storage = require('../Storage');
 var API = require('../API');
 var GoogleMaps = require('../GoogleMaps');
+var LiqPay = require('../LiqPay');
 
 var Cart = [];
 var $order = $("#ordered");
@@ -624,18 +648,34 @@ $('.confirm-button').click(function () {
     $addressWarning.addClass("hidden");
 
     var name = $nameInput.val();
-    console.log("Name", name);
+    //console.log("Name", name);
     var phone = $phoneInput.val();
-    console.log("Phone", phone);
+    //console.log("Phone", phone);
     var address = $addressInput.val();
     console.log("Address", address);
 
+    var $addressDelivery = $('.delivery-address-answer');
+
     $nameGroup.addClass(checkName(name));
     $phoneGroup.addClass(checkPhone(phone));
-    // $addressGroup.addClass(checkAddress(address));
+    checkAddress(address, function (err, data) {
+        if (err) {
+            $addressWarning.removeClass("hidden");
+            $addressGroup.addClass("has-error");
+            $addressDelivery.text("невідома");
+        } else {
+            $addressGroup.addClass("has-success");
+            if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success")) {
+                console.log("Order");
+                orderPizzas(name, phone, address);
+            }
+        }
+    });
 
     if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success") && $addressGroup.hasClass("has-success")) {
+        console.log("Order");
         orderPizzas(name, phone, address);
+
     }
 
 });
@@ -666,12 +706,21 @@ $addressInput.keyup(function () {
     $addressGroup.removeClass("has-success").removeClass("has-error");
     $addressWarning.addClass("hidden");
     var address = $(this).val();
-    checkAddress(address);
-    if (address == "") {
-        $addressGroup.removeClass("has-success").removeClass("has-error");
-        $addressWarning.addClass("hidden");
-        $('.delivery-address-answer').text("невідома");
-    }
+    checkAddress(address, function (err, data) {
+        if (err) {
+            if (err.id == 1) {
+                $addressGroup.removeClass("has-success").removeClass("has-error");
+                $addressWarning.addClass("hidden");
+                $addressDelivery.text("невідома");
+            } else if (err.id == 2) {
+                $addressWarning.removeClass("hidden");
+                $addressGroup.addClass(data);
+                $addressDelivery.text("невідома");
+            }
+        } else {
+            $addressGroup.addClass(data);
+        }
+    });
 });
 
 function checkPhone(phone) {
@@ -707,23 +756,25 @@ function checkName(name) {
     return res;
 }
 
-function checkAddress(address) {
+function checkAddress(address, callback) {
     var $addressDelivery = $('.delivery-address-answer');
 
     GoogleMaps.geocodeAddress(address, function (err, data) {
         if (!err) {
-            console.log("Has success ");
-            $addressGroup.addClass("has-success");
+            //     console.log("Has success ");
+            callback(null, "has-success");
         } else {
             if (address == "") {
-                $addressGroup.removeClass("has-success").removeClass("has-error");
-                $addressWarning.addClass("hidden");
-                $addressDelivery.text("невідома");
+                callback(new Error("Empty input", 1));
+                // $addressGroup.removeClass("has-success").removeClass("has-error");
+                //  $addressWarning.addClass("hidden");
+                // $addressDelivery.text("невідома");
             } else {
-                console.log("Has error");
-                $addressWarning.removeClass("hidden");
-                $addressGroup.addClass("has-error");
-                $addressDelivery.text("невідома");
+                //   console.log("Has error");
+                callback(new Error("No address", 2), "has-error");
+                // $addressWarning.removeClass("hidden");
+                // $addressGroup.addClass("has-error");
+                // $addressDelivery.text("невідома");
             }
         }
     });
@@ -738,18 +789,33 @@ function orderPizzas(nameI, phoneI, addressI) {
         pizzas: Cart,
         money: totalprice
     };
-    console.log("money " + order.money);
+    //console.log("money " + order.money);
     API.createOrder(order, function (err, data) {
         if (err) {
             alert("Order failed. Please, try again");
         } else {
-            alert("Order success: " + JSON.stringify(data));
+            LiqPayCheckout.init({
+                data: data.data,
+                signature: data.signature,
+                embedTo: "#liqpay",
+                mode: "popup" // embed || popup
+            }).on("liqpay.callback", function (data) {
+                console.log(data.status);
+                console.log(data);
+            }).on("liqpay.ready", function (data) {
+// ready
+            }).on("liqpay.close", function (data) {
+// close
+            });
+            //  alert("Order success: " + JSON.stringify(data));
         }
-    })
+    });
+
 }
 
+exports.orderPizzas = orderPizzas;
 exports.initialiseOrder = initialiseOrder;
-},{"../API":1,"../GoogleMaps":2,"../Storage":3,"../Templates":4,"./PizzaCart":6}],9:[function(require,module,exports){
+},{"../API":1,"../GoogleMaps":2,"../LiqPay":3,"../Storage":4,"../Templates":5,"./PizzaCart":7}],10:[function(require,module,exports){
 (function () {
 	// Basil
 	var Basil = function (options) {
@@ -1137,9 +1203,9 @@ exports.initialiseOrder = initialiseOrder;
 
 })();
 
-},{}],10:[function(require,module,exports){
-
 },{}],11:[function(require,module,exports){
+
+},{}],12:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -1939,7 +2005,7 @@ if (typeof window != 'undefined') {
   window.ejs = exports;
 }
 
-},{"../package.json":13,"./utils":12,"fs":10,"path":14}],12:[function(require,module,exports){
+},{"../package.json":14,"./utils":13,"fs":11,"path":15}],13:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -2104,7 +2170,7 @@ exports.cache = {
   }
 };
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports={
   "_args": [
     [
@@ -2219,7 +2285,7 @@ module.exports={
   "version": "2.5.5"
 }
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -2447,7 +2513,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":15}],15:[function(require,module,exports){
+},{"_process":16}],16:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -2629,4 +2695,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[5]);
+},{}]},{},[6]);

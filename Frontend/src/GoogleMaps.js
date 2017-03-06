@@ -96,7 +96,7 @@ function geocodeAddress(address, callback) {
     geocoder.geocode({'address': address}, function (results, status) {
         if (status === google.maps.GeocoderStatus.OK && results[0]) {
             var coordinates = results[0].geometry.location;
-            console.log("Coordinates by address" + coordinates);
+            //console.log("Coordinates by address" + coordinates);
             getTime(home, coordinates);
             calculateAndDisplayRoute(home, coordinates, directionsService, directionsDisplay);
             markerHome = new google.maps.Marker({
