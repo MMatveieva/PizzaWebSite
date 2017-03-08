@@ -53,9 +53,9 @@ function initialize() {
                     map: mapp, //mapp - це змінна карти створена за допомогою new google.maps.Map(...)
                     icon: "assets/images/home-icon.png"
                 });
-                //console.log(address);
                 $('#inputAddress').val(address);
                 $('.address-group').addClass("has-success");
+                $('.address-warning').addClass("hidden");
                 deliveryAddress.text(address);
                 getTime(home, coordinates);
                 calculateAndDisplayRoute(home, coordinates, directionsService, directionsDisplay);
@@ -138,7 +138,6 @@ function calculateAndDisplayRoute(home, marker, directionsService, directionsDis
     }, function (response, status) {
         if (status === google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(response);
-            // console.log("Display");
         } else {
             console.error('Directions request failed due to ' + status);
         }
@@ -153,7 +152,6 @@ function getTime(home, marker) {
             $time.text("невідомий");
         }
         $time.text(data.duration.text);
-        //console.log(data);
     });
 }
 

@@ -96,9 +96,9 @@ function initialize() {
                     map: mapp, //mapp - це змінна карти створена за допомогою new google.maps.Map(...)
                     icon: "assets/images/home-icon.png"
                 });
-                //console.log(address);
                 $('#inputAddress').val(address);
                 $('.address-group').addClass("has-success");
+                $('.address-warning').addClass("hidden");
                 deliveryAddress.text(address);
                 getTime(home, coordinates);
                 calculateAndDisplayRoute(home, coordinates, directionsService, directionsDisplay);
@@ -181,7 +181,6 @@ function calculateAndDisplayRoute(home, marker, directionsService, directionsDis
     }, function (response, status) {
         if (status === google.maps.DirectionsStatus.OK) {
             directionsDisplay.setDirections(response);
-            // console.log("Display");
         } else {
             console.error('Directions request failed due to ' + status);
         }
@@ -196,7 +195,6 @@ function getTime(home, marker) {
             $time.text("невідомий");
         }
         $time.text(data.duration.text);
-        //console.log(data);
     });
 }
 
@@ -634,25 +632,23 @@ $('.confirm-button').click(function () {
 
     $nameGroup.addClass(checkName(name));
     $phoneGroup.addClass(checkPhone(phone));
-    /*  checkAddress(address, function (err, data) {
-     if (err) {
-     $addressWarning.removeClass("hidden");
-     $addressGroup.addClass("has-error");
-     $addressDelivery.text("невідома");
-     } else {
-     $addressGroup.addClass("has-success");
-     if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success")) {
+    checkAddress(address, function (err, data) {
+        if (err) {
+            $addressWarning.removeClass("hidden");
+            $addressGroup.addClass("has-error");
+            $addressDelivery.text("невідома");
+        } else {
+            $addressGroup.addClass("has-success");
+            if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success")) {
+                orderPizzas(name, phone, address);
+            }
+        }
+    });
 
+    /* if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success") && $addressGroup.hasClass("has-success")) {
+     console.log("Order1");
      orderPizzas(name, phone, address);
-     }
-     }
-     });*/
-
-    // if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success") && $addressGroup.hasClass("has-success")) {
-    console.log("Order1");
-    orderPizzas(name, phone, address);
-
-    //  }
+     }*/
 
 });
 
@@ -742,7 +738,6 @@ function checkAddress(address, callback) {
         } else {
             if (address == "") {
                 callback(new Error("Empty input", 1));
-                console.log(callback);
                 // $addressGroup.removeClass("has-success").removeClass("has-error");
                 //  $addressWarning.addClass("hidden");
                 // $addressDelivery.text("невідома");
