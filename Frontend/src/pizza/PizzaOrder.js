@@ -7,7 +7,6 @@ var PizzaCart = require('./PizzaCart');
 var Storage = require('../Storage');
 var API = require('../API');
 var GoogleMaps = require('../GoogleMaps');
-var LiqPay = require('../LiqPay');
 
 var Cart = [];
 var $order = $("#ordered");
@@ -66,25 +65,25 @@ $('.confirm-button').click(function () {
 
     $nameGroup.addClass(checkName(name));
     $phoneGroup.addClass(checkPhone(phone));
-    checkAddress(address, function (err, data) {
-        if (err) {
-            $addressWarning.removeClass("hidden");
-            $addressGroup.addClass("has-error");
-            $addressDelivery.text("невідома");
-        } else {
-            $addressGroup.addClass("has-success");
-            if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success")) {
-                console.log("Order");
-                orderPizzas(name, phone, address);
-            }
-        }
-    });
+    /*  checkAddress(address, function (err, data) {
+     if (err) {
+     $addressWarning.removeClass("hidden");
+     $addressGroup.addClass("has-error");
+     $addressDelivery.text("невідома");
+     } else {
+     $addressGroup.addClass("has-success");
+     if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success")) {
 
-    if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success") && $addressGroup.hasClass("has-success")) {
-        console.log("Order");
-        orderPizzas(name, phone, address);
+     orderPizzas(name, phone, address);
+     }
+     }
+     });*/
 
-    }
+    // if ($nameGroup.hasClass("has-success") && $phoneGroup.hasClass("has-success") && $addressGroup.hasClass("has-success")) {
+    console.log("Order1");
+    orderPizzas(name, phone, address);
+
+    //  }
 
 });
 
@@ -174,6 +173,7 @@ function checkAddress(address, callback) {
         } else {
             if (address == "") {
                 callback(new Error("Empty input", 1));
+                console.log(callback);
                 // $addressGroup.removeClass("has-success").removeClass("has-error");
                 //  $addressWarning.addClass("hidden");
                 // $addressDelivery.text("невідома");
@@ -197,7 +197,7 @@ function orderPizzas(nameI, phoneI, addressI) {
         pizzas: Cart,
         money: totalprice
     };
-    //console.log("money " + order.money);
+
     API.createOrder(order, function (err, data) {
         if (err) {
             alert("Order failed. Please, try again");
@@ -211,11 +211,10 @@ function orderPizzas(nameI, phoneI, addressI) {
                 console.log(data.status);
                 console.log(data);
             }).on("liqpay.ready", function (data) {
-// ready
+                // ready
             }).on("liqpay.close", function (data) {
-// close
+                // close
             });
-            //  alert("Order success: " + JSON.stringify(data));
         }
     });
 
