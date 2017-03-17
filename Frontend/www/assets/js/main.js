@@ -168,6 +168,7 @@ function calculateRoute(A_latlng, B_latlng, callback) {
                 duration: leg.duration
             });
         } else {
+            $('.delivery-time-answer').text("невідомий");
             callback(new Error("Can' not find direction"));
         }
     });

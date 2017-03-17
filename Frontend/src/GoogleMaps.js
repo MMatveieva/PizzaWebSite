@@ -105,6 +105,7 @@ function geocodeAddress(address, callback) {
                 icon: "assets/images/home-icon.png"
             });
             deliveryAddress.text(address);
+            $('.address-warning').addClass("hidden");
             callback(null, coordinates);
         } else {
             callback(new Error("Can not find the address"));
@@ -125,6 +126,7 @@ function calculateRoute(A_latlng, B_latlng, callback) {
                 duration: leg.duration
             });
         } else {
+            $('.delivery-time-answer').text("невідомий");
             callback(new Error("Can' not find direction"));
         }
     });
